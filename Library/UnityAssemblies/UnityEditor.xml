@@ -97,14 +97,25 @@
       </summary>
       <param name="paths">Array of paths to scenes that are used for building the navmesh.</param>
     </member>
-    <member name="M:UnityEngine.AI.NavMeshBuilder.Cancel">
+    <member name="M:UnityEngine.AI.NavMeshBuilder.Cancel(UnityEngine.AI.NavMeshData)">
       <summary>
-        <para>Cancel Navmesh construction.</para>
+        <para>Cancels an asynchronous update of the specified NavMesh data. See Also: UpdateNavMeshDataAsync.</para>
       </summary>
+      <param name="data">The data associated with asynchronous updating.</param>
     </member>
     <member name="M:UnityEditor.AI.NavMeshBuilder.ClearAllNavMeshes">
       <summary>
         <para>Clear all Navmeshes.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.AI.NavMeshVisualizationSettings">
+      <summary>
+        <para>Represents the visualization state of the navigation debug graphics.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.AI.NavMeshVisualizationSettings.showNavigation">
+      <summary>
+        <para>A count of how many users requesting navigation debug graphics to be enabled.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.AlphabeticalSort">
@@ -270,6 +281,11 @@
     <member name="F:UnityEditor.AndroidSdkVersions.AndroidApiLevel25">
       <summary>
         <para>Android 7.1, "Nougat", API level 25.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.AndroidSdkVersions.AndroidApiLevelAuto">
+      <summary>
+        <para>Sets the target API level automatically, according to the latest installed SDK on your computer.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.AndroidShowActivityIndicatorOnLoading">
@@ -561,7 +577,8 @@
     </member>
     <member name="T:UnityEditor.AnimationMode">
       <summary>
-        <para>AnimationMode is used by the AnimationWindow to store properties modifed by the AnimationClip playback.</para>
+        <para>AnimationMode is used by the AnimationWindow to store properties modified
+      by the AnimationClip playback.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.AnimationMode.animatedPropertyColor">
@@ -569,21 +586,43 @@
         <para>The color used to show that a property is currently being animated.</para>
       </summary>
     </member>
+    <member name="M:UnityEditor.AnimationMode.AddPropertyModification(UnityEditor.EditorCurveBinding,UnityEditor.PropertyModification,System.Boolean)">
+      <summary>
+        <para>Marks a property as currently being animated.</para>
+      </summary>
+      <param name="binding">Description of the animation clip curve being modified.</param>
+      <param name="modification">Object property being modified.</param>
+      <param name="keepPrefabOverride">Indicates whether to retain modifications when the targeted object is an instance of prefab.</param>
+    </member>
+    <member name="M:UnityEditor.AnimationMode.BeginSampling">
+      <summary>
+        <para>Initialise the start of the animation clip sampling.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.AnimationMode.EndSampling">
+      <summary>
+        <para>Finish the sampling of the animation clip.</para>
+      </summary>
+    </member>
     <member name="M:UnityEditor.AnimationMode.InAnimationMode">
       <summary>
-        <para>Are we currently in AnimationMode.</para>
+        <para>Are we currently in AnimationMode?</para>
       </summary>
     </member>
     <member name="M:UnityEditor.AnimationMode.IsPropertyAnimated(UnityEngine.Object,System.String)">
       <summary>
         <para>Is the specified property currently in animation mode and being animated?</para>
       </summary>
-      <param name="target"></param>
-      <param name="propertyPath"></param>
+      <param name="target">The object to determine if it contained the animation.</param>
+      <param name="propertyPath">The name of the animation to search for.</param>
+      <returns>
+        <para>Whether the property search is found or not.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.AnimationMode.SampleAnimationClip(UnityEngine.GameObject,UnityEngine.AnimationClip,System.Single)">
       <summary>
-        <para>Samples an AnimationClip on the object and also records any modified properties in AnimationMode.</para>
+        <para>Samples an AnimationClip on the object and also records any modified
+        properties in AnimationMode.</para>
       </summary>
       <param name="gameObject"></param>
       <param name="clip"></param>
@@ -1789,6 +1828,36 @@ Transitions with exit times greater than one will be evaluated only once, so the
       <param name="propertyName"></param>
       <param name="data"></param>
     </member>
+    <member name="M:UnityEditor.AnimationUtility.GetKeyBroken(UnityEngine.AnimationCurve,System.Int32)">
+      <summary>
+        <para>Retrieve the specified keyframe broken tangent flag.</para>
+      </summary>
+      <param name="curve">Curve to query.</param>
+      <param name="index">Keyframe index.</param>
+      <returns>
+        <para>Broken flag at specified index.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.AnimationUtility.GetKeyLeftTangentMode(UnityEngine.AnimationCurve,System.Int32)">
+      <summary>
+        <para>Retrieve the left tangent mode of the keyframe at specified index.</para>
+      </summary>
+      <param name="curve">Curve to query.</param>
+      <param name="index">Keyframe index.</param>
+      <returns>
+        <para>Tangent mode at specified index.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.AnimationUtility.GetKeyRightTangentMode(UnityEngine.AnimationCurve,System.Int32)">
+      <summary>
+        <para>Retrieve the right tangent mode of the keyframe at specified index.</para>
+      </summary>
+      <param name="curve">Curve to query.</param>
+      <param name="index">Keyframe index.</param>
+      <returns>
+        <para>Tangent mode at specified index.</para>
+      </returns>
+    </member>
     <member name="M:UnityEditor.AnimationUtility.GetObjectReferenceCurve(UnityEngine.AnimationClip,UnityEditor.EditorCurveBinding)">
       <summary>
         <para>Return the object reference curve that the binding is pointing to.</para>
@@ -2249,22 +2318,24 @@ Transitions with exit times greater than one will be evaluated only once, so the
     </member>
     <member name="M:UnityEditor.AssetDatabase.FindAssets(System.String)">
       <summary>
-        <para>Search the asset database using a search filter string.</para>
+        <para>Search the asset database using the search filter string.</para>
       </summary>
-      <param name="filter">The filter string can contain search data for: names, asset labels and types (class names).</param>
-      <param name="searchInFolders">Specifying one or more folders will limit the searching to these folders and their child folders (and is faster than searching all assets).</param>
+      <param name="filter">The filter string can contain search data.  See below for
+        details about this string.</param>
+      <param name="searchInFolders">The folders where the search will start.</param>
       <returns>
-        <para>Array of matching asset GUIDs.</para>
+        <para>Array of matching asset. Note that GUIDs will be returned.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.AssetDatabase.FindAssets(System.String,System.String[])">
       <summary>
-        <para>Search the asset database using a search filter string.</para>
+        <para>Search the asset database using the search filter string.</para>
       </summary>
-      <param name="filter">The filter string can contain search data for: names, asset labels and types (class names).</param>
-      <param name="searchInFolders">Specifying one or more folders will limit the searching to these folders and their child folders (and is faster than searching all assets).</param>
+      <param name="filter">The filter string can contain search data.  See below for
+        details about this string.</param>
+      <param name="searchInFolders">The folders where the search will start.</param>
       <returns>
-        <para>Array of matching asset GUIDs.</para>
+        <para>Array of matching asset. Note that GUIDs will be returned.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.AssetDatabase.GenerateUniqueAssetPath(System.String)">
@@ -2524,6 +2595,54 @@ Transitions with exit times greater than one will be evaluated only once, so the
       </summary>
       <param name="assetPath">Filesystem path of the asset to load.</param>
     </member>
+    <member name="M:UnityEditor.AssetDatabase.IsMetaFileOpenForEdit(UnityEngine.Object,UnityEditor.StatusQueryOptions)">
+      <summary>
+        <para>Query whether an asset's metadata (.meta) file is open for edit in version control.</para>
+      </summary>
+      <param name="assetObject">Object representing the asset whose metadata status you wish to query.</param>
+      <param name="message">Returns a reason for the asset metadata not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
+      <returns>
+        <para>True if the asset's metadata is considered open for edit by the selected version control system.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.AssetDatabase.IsMetaFileOpenForEdit(UnityEngine.Object,System.String&amp;,UnityEditor.StatusQueryOptions)">
+      <summary>
+        <para>Query whether an asset's metadata (.meta) file is open for edit in version control.</para>
+      </summary>
+      <param name="assetObject">Object representing the asset whose metadata status you wish to query.</param>
+      <param name="message">Returns a reason for the asset metadata not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
+      <returns>
+        <para>True if the asset's metadata is considered open for edit by the selected version control system.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.AssetDatabase.IsMetaFileOpenForEdit(UnityEngine.Object)">
+      <summary>
+        <para>Query whether an asset's metadata (.meta) file is open for edit in version control.</para>
+      </summary>
+      <param name="assetObject">Object representing the asset whose metadata status you wish to query.</param>
+      <param name="message">Returns a reason for the asset metadata not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
+      <returns>
+        <para>True if the asset's metadata is considered open for edit by the selected version control system.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.AssetDatabase.IsMetaFileOpenForEdit(UnityEngine.Object,System.String&amp;)">
+      <summary>
+        <para>Query whether an asset's metadata (.meta) file is open for edit in version control.</para>
+      </summary>
+      <param name="assetObject">Object representing the asset whose metadata status you wish to query.</param>
+      <param name="message">Returns a reason for the asset metadata not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
+      <returns>
+        <para>True if the asset's metadata is considered open for edit by the selected version control system.</para>
+      </returns>
+    </member>
     <member name="M:UnityEditor.AssetDatabase.IsNativeAsset(UnityEngine.Object)">
       <summary>
         <para>Is asset a native asset?</para>
@@ -2538,52 +2657,108 @@ Transitions with exit times greater than one will be evaluated only once, so the
       <param name="obj"></param>
       <param name="instanceID"></param>
     </member>
+    <member name="M:UnityEditor.AssetDatabase.IsOpenForEdit(UnityEngine.Object,UnityEditor.StatusQueryOptions)">
+      <summary>
+        <para>Query whether an asset file is open for edit in version control.</para>
+      </summary>
+      <param name="assetObject">Object representing the asset whose status you wish to query.</param>
+      <param name="assetOrMetaFilePath">Path to the asset file or its .meta file on disk, relative to project folder.</param>
+      <param name="message">Returns a reason for the asset not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
+      <returns>
+        <para>True if the asset is considered open for edit by the selected version control system.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.AssetDatabase.IsOpenForEdit(System.String,UnityEditor.StatusQueryOptions)">
+      <summary>
+        <para>Query whether an asset file is open for edit in version control.</para>
+      </summary>
+      <param name="assetObject">Object representing the asset whose status you wish to query.</param>
+      <param name="assetOrMetaFilePath">Path to the asset file or its .meta file on disk, relative to project folder.</param>
+      <param name="message">Returns a reason for the asset not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
+      <returns>
+        <para>True if the asset is considered open for edit by the selected version control system.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.AssetDatabase.IsOpenForEdit(UnityEngine.Object,System.String&amp;,UnityEditor.StatusQueryOptions)">
+      <summary>
+        <para>Query whether an asset file is open for edit in version control.</para>
+      </summary>
+      <param name="assetObject">Object representing the asset whose status you wish to query.</param>
+      <param name="assetOrMetaFilePath">Path to the asset file or its .meta file on disk, relative to project folder.</param>
+      <param name="message">Returns a reason for the asset not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
+      <returns>
+        <para>True if the asset is considered open for edit by the selected version control system.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.AssetDatabase.IsOpenForEdit(System.String,System.String&amp;,UnityEditor.StatusQueryOptions)">
+      <summary>
+        <para>Query whether an asset file is open for edit in version control.</para>
+      </summary>
+      <param name="assetObject">Object representing the asset whose status you wish to query.</param>
+      <param name="assetOrMetaFilePath">Path to the asset file or its .meta file on disk, relative to project folder.</param>
+      <param name="message">Returns a reason for the asset not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
+      <returns>
+        <para>True if the asset is considered open for edit by the selected version control system.</para>
+      </returns>
+    </member>
     <member name="M:UnityEditor.AssetDatabase.IsOpenForEdit(UnityEngine.Object)">
       <summary>
-        <para>Use IsOpenForEdit to determine if the asset is open for edit by the version control.</para>
+        <para>Query whether an asset file is open for edit in version control.</para>
       </summary>
-      <param name="assetPath">Is the path to the asset on disk relative to project folder.</param>
-      <param name="message">Used to give reason for not open.</param>
-      <param name="assetObject"></param>
-      <param name="assetOrMetaFilePath"></param>
+      <param name="assetObject">Object representing the asset whose status you wish to query.</param>
+      <param name="assetOrMetaFilePath">Path to the asset file or its .meta file on disk, relative to project folder.</param>
+      <param name="message">Returns a reason for the asset not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
       <returns>
-        <para>True is the asset can be edited.</para>
+        <para>True if the asset is considered open for edit by the selected version control system.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.AssetDatabase.IsOpenForEdit(System.String)">
       <summary>
-        <para>Use IsOpenForEdit to determine if the asset is open for edit by the version control.</para>
+        <para>Query whether an asset file is open for edit in version control.</para>
       </summary>
-      <param name="assetPath">Is the path to the asset on disk relative to project folder.</param>
-      <param name="message">Used to give reason for not open.</param>
-      <param name="assetObject"></param>
-      <param name="assetOrMetaFilePath"></param>
+      <param name="assetObject">Object representing the asset whose status you wish to query.</param>
+      <param name="assetOrMetaFilePath">Path to the asset file or its .meta file on disk, relative to project folder.</param>
+      <param name="message">Returns a reason for the asset not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
       <returns>
-        <para>True is the asset can be edited.</para>
+        <para>True if the asset is considered open for edit by the selected version control system.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.AssetDatabase.IsOpenForEdit(UnityEngine.Object,System.String&amp;)">
       <summary>
-        <para>Use IsOpenForEdit to determine if the asset is open for edit by the version control.</para>
+        <para>Query whether an asset file is open for edit in version control.</para>
       </summary>
-      <param name="assetPath">Is the path to the asset on disk relative to project folder.</param>
-      <param name="message">Used to give reason for not open.</param>
-      <param name="assetObject"></param>
-      <param name="assetOrMetaFilePath"></param>
+      <param name="assetObject">Object representing the asset whose status you wish to query.</param>
+      <param name="assetOrMetaFilePath">Path to the asset file or its .meta file on disk, relative to project folder.</param>
+      <param name="message">Returns a reason for the asset not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
       <returns>
-        <para>True is the asset can be edited.</para>
+        <para>True if the asset is considered open for edit by the selected version control system.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.AssetDatabase.IsOpenForEdit(System.String,System.String&amp;)">
       <summary>
-        <para>Use IsOpenForEdit to determine if the asset is open for edit by the version control.</para>
+        <para>Query whether an asset file is open for edit in version control.</para>
       </summary>
-      <param name="assetPath">Is the path to the asset on disk relative to project folder.</param>
-      <param name="message">Used to give reason for not open.</param>
-      <param name="assetObject"></param>
-      <param name="assetOrMetaFilePath"></param>
+      <param name="assetObject">Object representing the asset whose status you wish to query.</param>
+      <param name="assetOrMetaFilePath">Path to the asset file or its .meta file on disk, relative to project folder.</param>
+      <param name="message">Returns a reason for the asset not being open for edit.</param>
+      <param name="StatusQueryOptions">Options for how the version control system should be queried. These options can effect the speed and accuracy of the query.</param>
+      <param name="statusOptions"></param>
       <returns>
-        <para>True is the asset can be edited.</para>
+        <para>True if the asset is considered open for edit by the selected version control system.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.AssetDatabase.IsSubAsset(UnityEngine.Object)">
@@ -2625,7 +2800,7 @@ Transitions with exit times greater than one will be evaluated only once, so the
       <param name="assetPath">Path of the asset to load.</param>
       <param name="type">Data type of the asset.</param>
       <returns>
-        <para>The asset matching the parameters</para>
+        <para>The asset matching the parameters.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.AssetDatabase.LoadMainAssetAtPath(System.String)">
@@ -3162,6 +3337,25 @@ Amount of compression. The value roughly corresponds to the ratio between the re
       <param name="lhs"></param>
       <param name="rhs"></param>
     </member>
+    <member name="T:UnityEditor.Build.BuildFailedException">
+      <summary>
+        <para>An exception class that represents a failed build.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.Build.BuildFailedException.#ctor(System.String)">
+      <summary>
+        <para>Constructs a BuildFailedException object.</para>
+      </summary>
+      <param name="message">The error that caused the build to fail.</param>
+      <param name="innerException">The exception that caused the build to fail.</param>
+    </member>
+    <member name="M:UnityEditor.Build.BuildFailedException.#ctor(System.Exception)">
+      <summary>
+        <para>Constructs a BuildFailedException object.</para>
+      </summary>
+      <param name="message">The error that caused the build to fail.</param>
+      <param name="innerException">The exception that caused the build to fail.</param>
+    </member>
     <member name="?:UnityEditor.Build.IOrderedCallback">
       <summary>
         <para>Interface that provides control over callback order.</para>
@@ -3300,6 +3494,11 @@ Amount of compression. The value roughly corresponds to the ratio between the re
     <member name="F:UnityEditor.BuildOptions.BuildScriptsOnly">
       <summary>
         <para>Build only the scripts of a project.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.BuildOptions.CompressWithLz4">
+      <summary>
+        <para>Use chunk-based Lz4 compression when building the Player.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.BuildOptions.ConnectToHost">
@@ -3516,16 +3715,22 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
       </summary>
       <param name="outputPath">Output path for the AssetBundles.</param>
       <param name="assetBundleOptions">AssetBundle building options.</param>
-      <param name="targetPlatform">Target build platform.</param>
+      <param name="targetPlatform">Chosen target build platform.</param>
+      <returns>
+        <para>The manifest listing all AssetBundles included in this build.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.BuildPipeline.BuildAssetBundles(System.String,UnityEditor.AssetBundleBuild[],UnityEditor.BuildAssetBundleOptions,UnityEditor.BuildTarget)">
       <summary>
         <para>Build AssetBundles from a building map.</para>
       </summary>
       <param name="outputPath">Output path for the AssetBundles.</param>
+      <param name="builds">AssetBundle building map.</param>
       <param name="assetBundleOptions">AssetBundle building options.</param>
       <param name="targetPlatform">Target build platform.</param>
-      <param name="builds">AssetBundle building map.</param>
+      <returns>
+        <para>The manifest listing all AssetBundles included in this build.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.BuildPipeline.BuildPlayer(UnityEditor.BuildPlayerOptions)">
       <summary>
@@ -3666,6 +3871,11 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
         <para>The BuildTarget to build.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.BuildPlayerOptions.targetGroup">
+      <summary>
+        <para>The BuildTargetGroup to build.</para>
+      </summary>
+    </member>
     <member name="T:UnityEditor.BuildTarget">
       <summary>
         <para>Target build platform.</para>
@@ -3728,17 +3938,17 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
     </member>
     <member name="F:UnityEditor.BuildTarget.StandaloneOSXIntel">
       <summary>
-        <para>Build an OS X standalone (Intel only).</para>
+        <para>Build a macOS standalone (Intel only).</para>
       </summary>
     </member>
     <member name="F:UnityEditor.BuildTarget.StandaloneOSXIntel64">
       <summary>
-        <para>Build an OSX Intel 64-bit standalone.</para>
+        <para>Build a macOS Intel 64-bit standalone.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.BuildTarget.StandaloneOSXUniversal">
       <summary>
-        <para>Build a universal OSX standalone.</para>
+        <para>Build a universal macOS standalone.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.BuildTarget.StandaloneWindows">
@@ -4123,7 +4333,8 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
     </member>
     <member name="M:UnityEditor.DecoratorDrawer.OnGUI(UnityEngine.Rect)">
       <summary>
-        <para>Override this method to make your own GUI for the decorator.</para>
+        <para>Override this method to make your own GUI for the decorator.
+See DecoratorDrawer for an example of how to use this.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the decorator GUI.</param>
     </member>
@@ -4233,7 +4444,7 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
     </member>
     <member name="F:UnityEditor.DrawCameraMode.Albedo">
       <summary>
-        <para>Draw objects with the albedo component only.</para>
+        <para>Draw objects with the albedo component only. This value has been deprecated. Please use DrawCameraMode.RealtimeAlbedo.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.DrawCameraMode.AlphaChannel">
@@ -4243,17 +4454,52 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
     </member>
     <member name="F:UnityEditor.DrawCameraMode.Baked">
       <summary>
-        <para>Draw objects with baked GI only.</para>
+        <para>Draw objects with baked GI only. This value has been deprecated. Please use DrawCameraMode.BakedLightmap.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.BakedAlbedo">
+      <summary>
+        <para>Draw objects with the baked albedo component only.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.BakedCharting">
+      <summary>
+        <para>Draw objects with different colors for each baked chart (UV island).</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.BakedDirectionality">
+      <summary>
+        <para>Draw objects with the baked directionality component only.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.BakedEmissive">
+      <summary>
+        <para>Draw objects with the baked emission component only.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.BakedIndices">
+      <summary>
+        <para>Draw objects with baked indices only.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.BakedLightmap">
+      <summary>
+        <para>Draw objects with the baked lightmap only.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.BakedTexelValidity">
+      <summary>
+        <para>Draw objects with baked texel validity only.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.DrawCameraMode.Charting">
       <summary>
-        <para>Draw objects with different color for each chart (UV island).</para>
+        <para>Draw objects with different colors for each real-time chart (UV island).</para>
       </summary>
     </member>
     <member name="F:UnityEditor.DrawCameraMode.Clustering">
       <summary>
-        <para>Draw with different color for each cluster.</para>
+        <para>Draw with different colors for each cluster.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.DrawCameraMode.DeferredDiffuse">
@@ -4278,17 +4524,17 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
     </member>
     <member name="F:UnityEditor.DrawCameraMode.Directionality">
       <summary>
-        <para>Draw objects with directionality for real-time GI.</para>
+        <para>Draw objects with directionality for real-time GI. This value has been deprecated. Please use DrawCameraMode.RealtimeDirectionality.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.DrawCameraMode.Emissive">
       <summary>
-        <para>Draw objects with the emission component only.</para>
+        <para>Draw objects with the emission component only. This value has been deprecated. Please use DrawCameraMode.RealtimeEmissive.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.DrawCameraMode.Irradiance">
       <summary>
-        <para>Draw objects with real-time GI only.</para>
+        <para>Draw objects with real-time GI only. This value has been deprecated. Please use DrawCameraMode.RealtimeIndirect.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.DrawCameraMode.LightOverlap">
@@ -4314,6 +4560,31 @@ These will be used as asset names, which you can then pass to AssetBundle.Load t
     <member name="F:UnityEditor.DrawCameraMode.Overdraw">
       <summary>
         <para>The camera is set to display Scene overdraw, with brighter colors indicating more overdraw.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.RealtimeAlbedo">
+      <summary>
+        <para>Draw objects with the real-time GI albedo component only.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.RealtimeCharting">
+      <summary>
+        <para>Draw objects with different colors for each real-time chart (UV island).</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.RealtimeDirectionality">
+      <summary>
+        <para>Draw objects with the real-time GI directionality component only.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.RealtimeEmissive">
+      <summary>
+        <para>Draw objects with the real-time GI emission component only.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.DrawCameraMode.RealtimeIndirect">
+      <summary>
+        <para>Draw objects with the real-time GI indirect light only.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.DrawCameraMode.RenderPaths">
@@ -4648,7 +4919,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="P:UnityEditor.EditorApplication.isUpdating">
       <summary>
-        <para>Is editor currently updating? (Read Only)</para>
+        <para>True if the Editor is currently refreshing the AssetDatabase.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.EditorApplication.modifierKeysChanged">
@@ -4807,7 +5078,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorApplication.SaveCurrentSceneIfUserWantsTo">
       <summary>
-        <para>Ask the user if he wants to save the open scene.</para>
+        <para>Ask the user if they want to save the open scene.</para>
       </summary>
     </member>
     <member name="M:UnityEditor.EditorApplication.SaveScene">
@@ -4861,6 +5132,42 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     <member name="M:UnityEditor.EditorApplication.UnlockReloadAssemblies">
       <summary>
         <para>Must be called after LockReloadAssemblies, to reenable loading of assemblies.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.EditorBuildSettings">
+      <summary>
+        <para>This class allows you to modify the Editor for an example of how to use this class.
+
+See Also: EditorBuildSettingsScene, EditorBuildSettings.scenes.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.EditorBuildSettings.scenes">
+      <summary>
+        <para>The list of Scenes that should be included in the build.
+This is the same list of Scenes that is shown in the window. You can modify this list to set up which Scenes should be included in the build.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.EditorBuildSettingsScene">
+      <summary>
+        <para>This class is used for entries in the Scenes list, as displayed in the window. This class contains the scene path of a scene and an enabled flag that indicates wether the scene is enabled in the BuildSettings window or not. 
+
+You can use this class in combination with EditorBuildSettings.scenes to populate the list of Scenes included in the build via script. This is useful when creating custom editor scripts to automate your build pipeline.
+
+See EditorBuildSettings.scenes for an example script.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.EditorBuildSettingsScene.enabled">
+      <summary>
+        <para>Whether this scene is enabled in the for an example of how to use this class.
+
+See Also: EditorBuildSettingsScene, EditorBuildSettings.scenes.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.EditorBuildSettingsScene.path">
+      <summary>
+        <para>The file path of the scene as listed in the Editor for an example of how to use this class.
+
+See Also: EditorBuildSettingsScene, EditorBuildSettings.scenes.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.EditorCurveBinding">
@@ -5422,6 +5729,30 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
       <param name="image">Texture to display.</param>
       <param name="scaleMode">How to scale the image when the aspect ratio of it doesn't fit the aspect ratio to be drawn within.</param>
       <param name="imageAspect">Aspect ratio to use for the source image. If 0 (the default), the aspect ratio from the image is used.</param>
+    </member>
+    <member name="M:UnityEditor.EditorGUI.DropdownButton(UnityEngine.Rect,UnityEngine.GUIContent,UnityEngine.FocusType)">
+      <summary>
+        <para>Make a button that reacts to mouse down, for displaying your own dropdown content.</para>
+      </summary>
+      <param name="position">Rectangle on the screen to use for the button.</param>
+      <param name="content">Text, image and tooltip for this button.</param>
+      <param name="focusType">Whether the button should be selectable by keyboard or not.</param>
+      <param name="style">Optional style to use.</param>
+      <returns>
+        <para>true when the user clicks the button.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUI.DropdownButton(UnityEngine.Rect,UnityEngine.GUIContent,UnityEngine.FocusType,UnityEngine.GUIStyle)">
+      <summary>
+        <para>Make a button that reacts to mouse down, for displaying your own dropdown content.</para>
+      </summary>
+      <param name="position">Rectangle on the screen to use for the button.</param>
+      <param name="content">Text, image and tooltip for this button.</param>
+      <param name="focusType">Whether the button should be selectable by keyboard or not.</param>
+      <param name="style">Optional style to use.</param>
+      <returns>
+        <para>true when the user clicks the button.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.EditorGUI.DropShadowLabel(UnityEngine.Rect,System.String)">
       <summary>
@@ -6333,7 +6664,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,System.Int64)">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -6345,7 +6676,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,System.String,System.Int64)">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -6357,7 +6688,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,UnityEngine.GUIContent,System.Int64)">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -6369,7 +6700,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -6381,7 +6712,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,System.String,System.Int64,UnityEngine.GUIStyle)">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -6393,7 +6724,7 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
     </member>
     <member name="M:UnityEditor.EditorGUI.LongField(UnityEngine.Rect,UnityEngine.GUIContent,System.Int64,UnityEngine.GUIStyle)">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="position">Rectangle on the screen to use for the long field.</param>
       <param name="label">Optional label to display in front of the long field.</param>
@@ -7439,7 +7770,8 @@ Each time an object is (or a group of objects are) created, renamed, parented, u
         <para>Begin a horizontal group and get its rect back.</para>
       </summary>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -7448,7 +7780,8 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
         <para>Begin a horizontal group and get its rect back.</para>
       </summary>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -7567,7 +7900,8 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
         <para>Begin a vertical group and get its rect back.</para>
       </summary>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting properties.
+        Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -7576,7 +7910,18 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
         <para>Begin a vertical group and get its rect back.</para>
       </summary>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting properties.
+        Any values passed in here will override settings defined by the style.&lt;br&gt;
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.BeginVertical">
+      <summary>
+        <para>Begin a vertical group and get its rect back.</para>
+      </summary>
+      <param name="style">Optional GUIStyle.</param>
+      <param name="options">An optional list of layout options that specify extra layouting properties.
+        Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -8322,6 +8667,34 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
         <para>The value entered by the user.</para>
       </returns>
     </member>
+    <member name="M:UnityEditor.EditorGUILayout.DropdownButton(UnityEngine.GUIContent,UnityEngine.FocusType,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a button that reacts to mouse down, for displaying your own dropdown content.</para>
+      </summary>
+      <param name="content">Text, image and tooltip for this button.</param>
+      <param name="focusType">Whether the button should be selectable by keyboard or not.</param>
+      <param name="style">Optional style to use.</param>
+      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
+      <returns>
+        <para>true when the user clicks the button.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.DropdownButton(UnityEngine.GUIContent,UnityEngine.FocusType,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a button that reacts to mouse down, for displaying your own dropdown content.</para>
+      </summary>
+      <param name="content">Text, image and tooltip for this button.</param>
+      <param name="focusType">Whether the button should be selectable by keyboard or not.</param>
+      <param name="style">Optional style to use.</param>
+      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
+      <returns>
+        <para>true when the user clicks the button.</para>
+      </returns>
+    </member>
     <member name="M:UnityEditor.EditorGUILayout.EndFadeGroup">
       <summary>
         <para>Closes a group started with BeginFadeGroup.</para>
@@ -8742,7 +9115,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="hasLabel">Optional boolean to specify if the control has a label. Default is true.</param>
       <param name="height">The height in pixels of the control. Default is EditorGUIUtility.singleLineHeight.</param>
       <param name="style">Optional GUIStyle to use for the control.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.
+      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -8753,7 +9126,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="hasLabel">Optional boolean to specify if the control has a label. Default is true.</param>
       <param name="height">The height in pixels of the control. Default is EditorGUIUtility.singleLineHeight.</param>
       <param name="style">Optional GUIStyle to use for the control.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.
+      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -8764,7 +9137,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="hasLabel">Optional boolean to specify if the control has a label. Default is true.</param>
       <param name="height">The height in pixels of the control. Default is EditorGUIUtility.singleLineHeight.</param>
       <param name="style">Optional GUIStyle to use for the control.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.
+      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -8775,7 +9148,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="hasLabel">Optional boolean to specify if the control has a label. Default is true.</param>
       <param name="height">The height in pixels of the control. Default is EditorGUIUtility.singleLineHeight.</param>
       <param name="style">Optional GUIStyle to use for the control.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.
+      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -9351,7 +9724,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(System.Int64,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -9365,7 +9738,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(System.Int64,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -9379,7 +9752,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(System.String,System.Int64,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -9393,7 +9766,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(System.String,System.Int64,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -9407,7 +9780,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(UnityEngine.GUIContent,System.Int64,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -9421,7 +9794,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEditor.EditorGUILayout.LongField(UnityEngine.GUIContent,System.Int64,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
       <summary>
-        <para>Make a text field for entering integers.</para>
+        <para>Make a text field for entering long integers.</para>
       </summary>
       <param name="label">Optional label to display in front of the long field.</param>
       <param name="value">The value to edit.</param>
@@ -9620,7 +9993,8 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="property">The object reference property the field shows.</param>
       <param name="objType">The type of the objects that can be assigned.</param>
       <param name="label">Optional label in front of the field. Pass GUIContent.none to hide the label.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -9631,7 +10005,8 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="property">The object reference property the field shows.</param>
       <param name="objType">The type of the objects that can be assigned.</param>
       <param name="label">Optional label in front of the field. Pass GUIContent.none to hide the label.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -9642,7 +10017,8 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="property">The object reference property the field shows.</param>
       <param name="objType">The type of the objects that can be assigned.</param>
       <param name="label">Optional label in front of the field. Pass GUIContent.none to hide the label.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -9653,7 +10029,44 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="property">The object reference property the field shows.</param>
       <param name="objType">The type of the objects that can be assigned.</param>
       <param name="label">Optional label in front of the field. Pass GUIContent.none to hide the label.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.ObjectField(UnityEngine.Object,System.Type,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a field to receive any object type.</para>
+      </summary>
+      <param name="obj">The object the field shows.</param>
+      <param name="objType">The type of the objects that can be assigned.</param>
+      <param name="label">Optional label in front of the field.</param>
+      <param name="label">Optional label in front of the field.</param>
+      <param name="options">An optional list of layout options that specify extra layout properties. Any values passed in here will override settings defined by the style.
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.ObjectField(System.String,UnityEngine.Object,System.Type,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a field to receive any object type.</para>
+      </summary>
+      <param name="obj">The object the field shows.</param>
+      <param name="objType">The type of the objects that can be assigned.</param>
+      <param name="label">Optional label in front of the field.</param>
+      <param name="label">Optional label in front of the field.</param>
+      <param name="options">An optional list of layout options that specify extra layout properties. Any values passed in here will override settings defined by the style.
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
+    </member>
+    <member name="M:UnityEditor.EditorGUILayout.ObjectField(UnityEngine.GUIContent,UnityEngine.Object,System.Type,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>Make a field to receive any object type.</para>
+      </summary>
+      <param name="obj">The object the field shows.</param>
+      <param name="objType">The type of the objects that can be assigned.</param>
+      <param name="label">Optional label in front of the field.</param>
+      <param name="label">Optional label in front of the field.</param>
+      <param name="options">An optional list of layout options that specify extra layout properties. Any values passed in here will override settings defined by the style.
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
@@ -9865,7 +10278,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <summary>
         <para>Make a label in front of some control.</para>
       </summary>
-      <param name="label">Label to show in front of the control.</param>
+      <param name="label">Label to show to the left of the control.</param>
       <param name="followingStyle"></param>
       <param name="labelStyle"></param>
     </member>
@@ -9873,7 +10286,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <summary>
         <para>Make a label in front of some control.</para>
       </summary>
-      <param name="label">Label to show in front of the control.</param>
+      <param name="label">Label to show to the left of the control.</param>
       <param name="followingStyle"></param>
       <param name="labelStyle"></param>
     </member>
@@ -9881,7 +10294,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <summary>
         <para>Make a label in front of some control.</para>
       </summary>
-      <param name="label">Label to show in front of the control.</param>
+      <param name="label">Label to show to the left of the control.</param>
       <param name="followingStyle"></param>
       <param name="labelStyle"></param>
     </member>
@@ -9889,7 +10302,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <summary>
         <para>Make a label in front of some control.</para>
       </summary>
-      <param name="label">Label to show in front of the control.</param>
+      <param name="label">Label to show to the left of the control.</param>
       <param name="followingStyle"></param>
       <param name="labelStyle"></param>
     </member>
@@ -9897,7 +10310,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <summary>
         <para>Make a label in front of some control.</para>
       </summary>
-      <param name="label">Label to show in front of the control.</param>
+      <param name="label">Label to show to the left of the control.</param>
       <param name="followingStyle"></param>
       <param name="labelStyle"></param>
     </member>
@@ -9905,7 +10318,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <summary>
         <para>Make a label in front of some control.</para>
       </summary>
-      <param name="label">Label to show in front of the control.</param>
+      <param name="label">Label to show to the left of the control.</param>
       <param name="followingStyle"></param>
       <param name="labelStyle"></param>
     </member>
@@ -10391,7 +10804,9 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="label">Optional label in front of the toggle.</param>
       <param name="value">The shown state of the toggle.</param>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+        
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
@@ -10405,7 +10820,9 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="label">Optional label in front of the toggle.</param>
       <param name="value">The shown state of the toggle.</param>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+        
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
@@ -10419,7 +10836,9 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="label">Optional label in front of the toggle.</param>
       <param name="value">The shown state of the toggle.</param>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+        
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
@@ -10433,7 +10852,9 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="label">Optional label in front of the toggle.</param>
       <param name="value">The shown state of the toggle.</param>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+        
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
@@ -10447,7 +10868,9 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="label">Optional label in front of the toggle.</param>
       <param name="value">The shown state of the toggle.</param>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+        
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
@@ -10461,7 +10884,9 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="label">Optional label in front of the toggle.</param>
       <param name="value">The shown state of the toggle.</param>
       <param name="style">Optional GUIStyle.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+        
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
@@ -10568,7 +10993,8 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       </summary>
       <param name="label">Label to display above the field.</param>
       <param name="value">The value to edit.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
@@ -10581,7 +11007,8 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       </summary>
       <param name="label">Label to display above the field.</param>
       <param name="value">The value to edit.</param>
-      <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
+      <param name="options">An optional list of layout options that specify extra layouting
+        properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
 See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
@@ -10714,9 +11141,9 @@ This value is the number of screen pixels per point of interface space. For inst
     </member>
     <member name="M:UnityEditor.EditorGUIUtility.CommandEvent(System.String)">
       <summary>
-        <para>Creates an event.</para>
+        <para>Creates an event that can be sent to another window.</para>
       </summary>
-      <param name="commandName"></param>
+      <param name="commandName">The command to be sent.</param>
     </member>
     <member name="M:UnityEditor.EditorGUIUtility.DrawColorSwatch(UnityEngine.Rect,UnityEngine.Color)">
       <summary>
@@ -10819,17 +11246,15 @@ This value is the number of screen pixels per point of interface space. For inst
       <summary>
         <para>Fetch the GUIContent from the Unity builtin resources with the given name.</para>
       </summary>
-      <param name="name">Content name.</param>
-      <param name="tooltip">Tooltip.</param>
-      <param name="text"></param>
+      <param name="name">Name of the desired icon.</param>
+      <param name="text">Tooltip for hovering over the icon.</param>
     </member>
     <member name="M:UnityEditor.EditorGUIUtility.IconContent(System.String,System.String)">
       <summary>
         <para>Fetch the GUIContent from the Unity builtin resources with the given name.</para>
       </summary>
-      <param name="name">Content name.</param>
-      <param name="tooltip">Tooltip.</param>
-      <param name="text"></param>
+      <param name="name">Name of the desired icon.</param>
+      <param name="text">Tooltip for hovering over the icon.</param>
     </member>
     <member name="T:UnityEditor.EditorGUIUtility.IconSizeScope">
       <summary>
@@ -10859,7 +11284,7 @@ This value is the number of screen pixels per point of interface space. For inst
     </member>
     <member name="M:UnityEditor.EditorGUIUtility.LoadRequired(System.String)">
       <summary>
-        <para>Load a built-in resource that has to be there.</para>
+        <para>Load a required built-in resource.</para>
       </summary>
       <param name="path"></param>
     </member>
@@ -10898,16 +11323,16 @@ This value is the number of screen pixels per point of interface space. For inst
     </member>
     <member name="M:UnityEditor.EditorGUIUtility.PingObject(UnityEngine.Object)">
       <summary>
-        <para>Ping an object in a window like clicking it in an inspector.</para>
+        <para>Ping an object in the Scene like clicking it in an inspector.</para>
       </summary>
-      <param name="obj"></param>
+      <param name="obj">The object to be pinged.</param>
       <param name="targetInstanceID"></param>
     </member>
     <member name="M:UnityEditor.EditorGUIUtility.PingObject(System.Int32)">
       <summary>
-        <para>Ping an object in a window like clicking it in an inspector.</para>
+        <para>Ping an object in the Scene like clicking it in an inspector.</para>
       </summary>
-      <param name="obj"></param>
+      <param name="obj">The object to be pinged.</param>
       <param name="targetInstanceID"></param>
     </member>
     <member name="M:UnityEditor.EditorGUIUtility.PixelsToPoints(UnityEngine.Vector2)">
@@ -11049,31 +11474,45 @@ This value is the number of screen pixels per point of interface space. For inst
     </member>
     <member name="M:UnityEditor.EditorPrefs.GetFloat(System.String)">
       <summary>
-        <para>Returns the value corresponding to key in the preference file if it exists.</para>
+        <para>Returns the float value corresponding to key if it exists in the preference file.</para>
       </summary>
-      <param name="key"></param>
-      <param name="defaultValue"></param>
+      <param name="key">Name of key to read float from.</param>
+      <param name="defaultValue">Float value to return if the key is not in the storage.</param>
+      <returns>
+        <para>The float value stored in the preference file or the defaultValue id the
+        requested float does not exist.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.EditorPrefs.GetFloat(System.String,System.Single)">
       <summary>
-        <para>Returns the value corresponding to key in the preference file if it exists.</para>
+        <para>Returns the float value corresponding to key if it exists in the preference file.</para>
       </summary>
-      <param name="key"></param>
-      <param name="defaultValue"></param>
+      <param name="key">Name of key to read float from.</param>
+      <param name="defaultValue">Float value to return if the key is not in the storage.</param>
+      <returns>
+        <para>The float value stored in the preference file or the defaultValue id the
+        requested float does not exist.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.EditorPrefs.GetInt(System.String)">
       <summary>
         <para>Returns the value corresponding to key in the preference file if it exists.</para>
       </summary>
-      <param name="key"></param>
-      <param name="defaultValue"></param>
+      <param name="key">Name of key to read integer from.</param>
+      <param name="defaultValue">Integer value to return if the key is not in the storage.</param>
+      <returns>
+        <para>The value stored in the preference file.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.EditorPrefs.GetInt(System.String,System.Int32)">
       <summary>
         <para>Returns the value corresponding to key in the preference file if it exists.</para>
       </summary>
-      <param name="key"></param>
-      <param name="defaultValue"></param>
+      <param name="key">Name of key to read integer from.</param>
+      <param name="defaultValue">Integer value to return if the key is not in the storage.</param>
+      <returns>
+        <para>The value stored in the preference file.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.EditorPrefs.GetString(System.String)">
       <summary>
@@ -11091,9 +11530,12 @@ This value is the number of screen pixels per point of interface space. For inst
     </member>
     <member name="M:UnityEditor.EditorPrefs.HasKey(System.String)">
       <summary>
-        <para>Returns true if key exists in the preferences.</para>
+        <para>Returns true if key exists in the preferences file.</para>
       </summary>
-      <param name="key"></param>
+      <param name="key">Name of key to check for.</param>
+      <returns>
+        <para>The existence or not of the key.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.EditorPrefs.SetBool(System.String,System.Boolean)">
       <summary>
@@ -11104,17 +11546,17 @@ This value is the number of screen pixels per point of interface space. For inst
     </member>
     <member name="M:UnityEditor.EditorPrefs.SetFloat(System.String,System.Single)">
       <summary>
-        <para>Sets the value of the preference identified by key.</para>
+        <para>Sets the float value of the preference identified by key.</para>
       </summary>
-      <param name="key"></param>
-      <param name="value"></param>
+      <param name="key">Name of key to write float into.</param>
+      <param name="value">Float value to write into the storage.</param>
     </member>
     <member name="M:UnityEditor.EditorPrefs.SetInt(System.String,System.Int32)">
       <summary>
         <para>Sets the value of the preference identified by key as an integer.</para>
       </summary>
-      <param name="key"></param>
-      <param name="value"></param>
+      <param name="key">Name of key to write integer to.</param>
+      <param name="value">Value of the integer to write into the storage.</param>
     </member>
     <member name="M:UnityEditor.EditorPrefs.SetString(System.String,System.String)">
       <summary>
@@ -11588,6 +12030,11 @@ This value is the number of screen pixels per point of interface space. For inst
         <para>Sets and gets target device type for the application to run on when building to Windows Store platform.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.EditorUserBuildSettings.wsaUWPSDK">
+      <summary>
+        <para>Sets and gets target UWP SDK to build Windows Store application against.</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.EditorUserBuildSettings.xboxBuildSubtarget">
       <summary>
         <para>Xbox Build subtarget.</para>
@@ -11667,6 +12114,11 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
     <member name="T:UnityEditor.EditorUtility">
       <summary>
         <para>Editor utility functions.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.EditorUtility.scriptCompilationFailed">
+      <summary>
+        <para>True if there are any compilation error messages in the log.</para>
       </summary>
     </member>
     <member name="M:UnityEditor.EditorUtility.ClearProgressBar">
@@ -11757,11 +12209,14 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
       <summary>
         <para>Displays a modal dialog with three buttons.</para>
       </summary>
-      <param name="title"></param>
-      <param name="message"></param>
-      <param name="ok"></param>
-      <param name="cancel"></param>
-      <param name="alt"></param>
+      <param name="title">Title for dialog.</param>
+      <param name="message">Purpose for the dialog.</param>
+      <param name="ok">Dialog function chosen.</param>
+      <param name="alt">Choose alternative dialog purpose.</param>
+      <param name="cancel">Close dialog with no operation.</param>
+      <returns>
+        <para>The id of the chosen button.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.EditorUtility.DisplayPopupMenu(UnityEngine.Rect,System.String,UnityEditor.MenuCommand)">
       <summary>
@@ -11894,7 +12349,7 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
     </member>
     <member name="M:UnityEditor.EditorUtility.SetSelectedWireframeHidden(UnityEngine.Renderer,System.Boolean)">
       <summary>
-        <para>Set whether the Renderer's wireframe will be hidden when the renderer's GameObject is selected.</para>
+        <para>Sets whether the selected Renderer's wireframe will be hidden when the GameObject it is attached to is selected.</para>
       </summary>
       <param name="renderer"></param>
       <param name="enabled"></param>
@@ -12839,6 +13294,21 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
         <para>Draw the gizmo if it is selected.</para>
       </summary>
     </member>
+    <member name="T:UnityEditor.GraphicsJobMode">
+      <summary>
+        <para>Enum used to specify the graphics jobs mode to use.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.GraphicsJobMode.Legacy">
+      <summary>
+        <para>Legacy graphics jobs.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.GraphicsJobMode.Native">
+      <summary>
+        <para>Native graphics jobs.</para>
+      </summary>
+    </member>
     <member name="T:UnityEditor.GUIDrawer">
       <summary>
         <para>Base class for PropertyDrawer and DecoratorDrawer.</para>
@@ -12914,9 +13384,9 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
         <para>Draw an arrow like those used by the move tool.</para>
       </summary>
       <param name="controlID">The control ID for the handle.</param>
-      <param name="position">The world-space position of the handle's start point.</param>
-      <param name="rotation">The rotation of the handle.</param>
-      <param name="size">The size of the handle in world-space units.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
       <param name="eventType">Event type for the handle to act upon. By design it handles EventType.Layout and EventType.Repaint events.</param>
     </member>
     <member name="M:UnityEditor.Handles.BeginGUI">
@@ -12935,10 +13405,10 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
       <summary>
         <para>Make a 3D Button.</para>
       </summary>
-      <param name="position">The world-space position to draw the button.</param>
-      <param name="direction">The rotation of the button.</param>
-      <param name="size">The visual size of the button.</param>
-      <param name="pickSize">The size of the button for the purpose of detecting a click.</param>
+      <param name="position">The position to draw the button in the space of Handles.matrix.</param>
+      <param name="direction">The rotation of the button in the space of Handles.matrix.</param>
+      <param name="size">The visual size of the handle. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="pickSize">The size of the button for the purpose of detecting a click. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
       <param name="capFunction">The draw style of the button.</param>
       <returns>
         <para>True when the user clicks the button.</para>
@@ -12949,8 +13419,8 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
         <para>The function to use for drawing the handle e.g. Handles.RectangleCap.</para>
       </summary>
       <param name="controlID">The control ID for the handle.</param>
-      <param name="position">The world-space position of the handle's start point.</param>
-      <param name="rotation">The rotation of the handle.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
       <param name="size">The size of the handle in world-space units.</param>
       <param name="eventType">Event type for the handle to act upon. By design it handles EventType.Layout and EventType.Repaint events.</param>
     </member>
@@ -12959,9 +13429,9 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
         <para>Draw a circle handle. Pass this into handle functions.</para>
       </summary>
       <param name="controlID">The control ID for the handle.</param>
-      <param name="position">The world-space position of the handle's start point.</param>
-      <param name="rotation">The rotation of the handle.</param>
-      <param name="size">The size of the handle in world-space units.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
       <param name="eventType">Event type for the handle to act upon. By design it handles EventType.Layout and EventType.Repaint events.</param>
     </member>
     <member name="M:UnityEditor.Handles.ClearCamera(UnityEngine.Rect,UnityEngine.Camera)">
@@ -12976,9 +13446,9 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
         <para>Draw a cone handle. Pass this into handle functions.</para>
       </summary>
       <param name="controlID">The control ID for the handle.</param>
-      <param name="position">The world-space position of the handle's start point.</param>
-      <param name="rotation">The rotation of the handle.</param>
-      <param name="size">The size of the handle in world-space units.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
       <param name="eventType">Event type for the handle to act upon. By design it handles EventType.Layout and EventType.Repaint events.</param>
     </member>
     <member name="M:UnityEditor.Handles.CubeHandleCap(System.Int32,UnityEngine.Vector3,UnityEngine.Quaternion,System.Single,UnityEngine.EventType)">
@@ -12986,9 +13456,9 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
         <para>Draw a cube handle. Pass this into handle functions.</para>
       </summary>
       <param name="controlID">The control ID for the handle.</param>
-      <param name="position">The world-space position of the handle's start point.</param>
-      <param name="rotation">The rotation of the handle.</param>
-      <param name="size">The size of the handle in world-space units.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
       <param name="eventType">Event type for the handle to act upon. By design it handles EventType.Layout and EventType.Repaint events.</param>
     </member>
     <member name="M:UnityEditor.Handles.CylinderHandleCap(System.Int32,UnityEngine.Vector3,UnityEngine.Quaternion,System.Single,UnityEngine.EventType)">
@@ -12996,9 +13466,9 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
         <para>Draw a cylinder handle. Pass this into handle functions.</para>
       </summary>
       <param name="controlID">The control ID for the handle.</param>
-      <param name="position">The world-space position of the handle's start point.</param>
-      <param name="rotation">The rotation of the handle.</param>
-      <param name="size">The size of the handle in world-space units.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
       <param name="eventType">Event type for the handle to act upon. By design it handles EventType.Layout and EventType.Repaint events.</param>
     </member>
     <member name="M:UnityEditor.Handles.Disc(UnityEngine.Quaternion,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,System.Boolean,System.Single)">
@@ -13021,9 +13491,9 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>Draw a dot handle. Pass this into handle functions.</para>
       </summary>
       <param name="controlID">The control ID for the handle.</param>
-      <param name="position">The world-space position of the handle's start point.</param>
-      <param name="rotation">The rotation of the handle.</param>
-      <param name="size">The size of the handle in world-space units.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
       <param name="eventType">Event type for the handle to act upon. By design it handles EventType.Layout and EventType.Repaint events.</param>
     </member>
     <member name="M:UnityEditor.Handles.DrawAAConvexPolygon(UnityEngine.Vector3[])">
@@ -13113,15 +13583,6 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <param name="position">The area to draw the camera within in GUI coordinates.</param>
       <param name="camera">The camera to draw.</param>
       <param name="drawMode">How the camera is drawn (textured, wireframe, etc.).</param>
-    </member>
-    <member name="T:UnityEditor.Handles.DrawCapFunction">
-      <summary>
-        <para>The function to use for drawing the handle e.g. Handles.RectangleCap.</para>
-      </summary>
-      <param name="controlID"></param>
-      <param name="position"></param>
-      <param name="rotation"></param>
-      <param name="size"></param>
     </member>
     <member name="M:UnityEditor.Handles.DrawDottedLine(UnityEngine.Vector3,UnityEngine.Vector3,System.Single)">
       <summary>
@@ -13291,10 +13752,10 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <summary>
         <para>Make an unconstrained movement handle.</para>
       </summary>
-      <param name="position">The position of the handle.</param>
-      <param name="rotation">The rotation of the handle. this defines the space along.</param>
-      <param name="size">The size of the handle.</param>
-      <param name="snap">The grid size to snap movement to.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="snap">The snap increment on all axes. See Handles.SnapValue.</param>
       <param name="capFunction">The function to call for doing the actual drawing.</param>
       <returns>
         <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
@@ -13390,14 +13851,12 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     </member>
     <member name="M:UnityEditor.Handles.PositionHandle(UnityEngine.Vector3,UnityEngine.Quaternion)">
       <summary>
-        <para>Make a 3D Scene view position handle.</para>
+        <para>Make a position handle.</para>
       </summary>
       <param name="position">Center of the handle in 3D space.</param>
       <param name="rotation">Orientation of the handle in 3D space.</param>
       <returns>
-        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.RadiusHandle(UnityEngine.Quaternion,UnityEngine.Vector3,System.Single,System.Boolean)">
@@ -13433,9 +13892,9 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>Draw a rectangle handle. Pass this into handle functions.</para>
       </summary>
       <param name="controlID">The control ID for the handle.</param>
-      <param name="position">The world-space position of the handle's start point.</param>
-      <param name="rotation">The rotation of the handle.</param>
-      <param name="size">The size of the handle in world-space units.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
       <param name="eventType">Event type for the handle to act upon. By design it handles EventType.Layout and EventType.Repaint events.</param>
     </member>
     <member name="M:UnityEditor.Handles.RotationHandle(UnityEngine.Quaternion,UnityEngine.Vector3)">
@@ -13464,29 +13923,27 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     </member>
     <member name="M:UnityEditor.Handles.ScaleSlider(System.Single,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Quaternion,System.Single,System.Single)">
       <summary>
-        <para>Make a directional scale slider.
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
+        <para>Make a directional scale slider.</para>
       </summary>
       <param name="scale">The value the user can modify.</param>
-      <param name="position">The position of the handle.</param>
-      <param name="direction">The direction of the handle.</param>
-      <param name="rotation">The rotation of whole object.</param>
-      <param name="size">The size of the handle.</param>
-      <param name="snap">The new value after the user has modified it.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="direction">The direction of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="snap">The snap increment. See Handles.SnapValue.</param>
       <returns>
-        <para>The value modified by the user's interaction with the handle.</para>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.ScaleValueHandle(System.Single,UnityEngine.Vector3,UnityEngine.Quaternion,System.Single,UnityEditor.Handles/CapFunction,System.Single)">
       <summary>
-        <para>Make a single-float draggable handle.</para>
+        <para>Make a 3D handle that scales a single float.</para>
       </summary>
       <param name="value">The value the user can modify.</param>
-      <param name="position">The position of the handle.</param>
-      <param name="rotation">The rotation of the handle.</param>
-      <param name="size">The size of the handle.</param>
-      <param name="snap">The new value after the user has modified it.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="snap">The snap increment. See Handles.SnapValue.</param>
       <param name="capFunction">The function to call for doing the actual drawing.</param>
       <returns>
         <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
@@ -13514,108 +13971,100 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     </member>
     <member name="M:UnityEditor.Handles.Slider(UnityEngine.Vector3,UnityEngine.Vector3)">
       <summary>
-        <para>Make a 3D slider.</para>
+        <para>Make a 3D slider that moves along one axis.</para>
       </summary>
-      <param name="position">The position of the current point.</param>
-      <param name="direction">The direction of the sliding.</param>
-      <param name="size">3D size the size of the handle.</param>
-      <param name="snap">The snap value (see Handles.SnapValue).</param>
-      <param name="capFunction">The function to call for doing the actual drawing - by default, it's Handles.ArrowHAndleCap, but any function that has the same signature can be used.</param>
+      <param name="position">The position of the current point in the space of Handles.matrix.</param>
+      <param name="direction">The direction axis of the slider in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="snap">The snap increment. See Handles.SnapValue.</param>
+      <param name="capFunction">The function to call for doing the actual drawing. By default it is Handles.ArrowHandleCap, but any function that has the same signature can be used.</param>
       <returns>
-        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the position value passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.Slider(UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEditor.Handles/CapFunction,System.Single)">
       <summary>
-        <para>Make a 3D slider.</para>
+        <para>Make a 3D slider that moves along one axis.</para>
       </summary>
-      <param name="position">The position of the current point.</param>
-      <param name="direction">The direction of the sliding.</param>
-      <param name="size">3D size the size of the handle.</param>
-      <param name="snap">The snap value (see Handles.SnapValue).</param>
-      <param name="capFunction">The function to call for doing the actual drawing - by default, it's Handles.ArrowHAndleCap, but any function that has the same signature can be used.</param>
+      <param name="position">The position of the current point in the space of Handles.matrix.</param>
+      <param name="direction">The direction axis of the slider in the space of Handles.matrix.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="snap">The snap increment. See Handles.SnapValue.</param>
+      <param name="capFunction">The function to call for doing the actual drawing. By default it is Handles.ArrowHandleCap, but any function that has the same signature can be used.</param>
       <returns>
-        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the same value as you passed into the function.</para>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the position value passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.Slider2D(System.Int32,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEditor.Handles/CapFunction,UnityEngine.Vector2,System.Boolean)">
       <summary>
-        <para>Slide a handle in a 2D plane.</para>
+        <para>Make a 3D slider that moves along a plane defined by two axes.</para>
       </summary>
       <param name="id">(optional) override the default ControlID for this Slider2D instance.</param>
-      <param name="handlePos">The position of the current point.</param>
+      <param name="handlePos">The position of the current point in the space of Handles.matrix.</param>
       <param name="offset">(optional) renders the Slider2D at handlePos, but treats the Slider2D's origin as handlePos + offset. Useful for Slider2D instances that are placed/rendered relative to another object or handle.</param>
-      <param name="handleDir">The direction of the handle, only used for rendering of the handle.</param>
-      <param name="slideDir1">The first direction of the sliding.</param>
-      <param name="slideDir2">The second direction of the sliding.</param>
-      <param name="handleSize">The size of the handle.</param>
-      <param name="snap">(float or Vector2) set the snap increment (Pass a Vector2 to use separate snap increments in each dimension).</param>
+      <param name="handleDir">The direction of the handle in the space of Handles.matrix, only used for rendering of the handle.</param>
+      <param name="slideDir1">The first axis of the slider's plane of movement in the space of Handles.matrix.</param>
+      <param name="slideDir2">The second axis of the slider's plane of movement in the space of Handles.matrix.</param>
+      <param name="handleSize">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="snap">(float or Vector2) The snap increment along both axes, either uniform or per-axis. See Handles.SnapValue.</param>
       <param name="drawHelper">(default: false) render a rectangle around the handle when dragging.</param>
       <param name="capFunction">The function to call for doing the actual drawing.</param>
       <returns>
-        <para>The new handle position
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the position value passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.Slider2D(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEditor.Handles/CapFunction,System.Single,System.Boolean)">
       <summary>
-        <para>Slide a handle in a 2D plane.</para>
+        <para>Make a 3D slider that moves along a plane defined by two axes.</para>
       </summary>
       <param name="id">(optional) override the default ControlID for this Slider2D instance.</param>
-      <param name="handlePos">The position of the current point.</param>
+      <param name="handlePos">The position of the current point in the space of Handles.matrix.</param>
       <param name="offset">(optional) renders the Slider2D at handlePos, but treats the Slider2D's origin as handlePos + offset. Useful for Slider2D instances that are placed/rendered relative to another object or handle.</param>
-      <param name="handleDir">The direction of the handle, only used for rendering of the handle.</param>
-      <param name="slideDir1">The first direction of the sliding.</param>
-      <param name="slideDir2">The second direction of the sliding.</param>
-      <param name="handleSize">The size of the handle.</param>
-      <param name="snap">(float or Vector2) set the snap increment (Pass a Vector2 to use separate snap increments in each dimension).</param>
+      <param name="handleDir">The direction of the handle in the space of Handles.matrix, only used for rendering of the handle.</param>
+      <param name="slideDir1">The first axis of the slider's plane of movement in the space of Handles.matrix.</param>
+      <param name="slideDir2">The second axis of the slider's plane of movement in the space of Handles.matrix.</param>
+      <param name="handleSize">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="snap">(float or Vector2) The snap increment along both axes, either uniform or per-axis. See Handles.SnapValue.</param>
       <param name="drawHelper">(default: false) render a rectangle around the handle when dragging.</param>
       <param name="capFunction">The function to call for doing the actual drawing.</param>
       <returns>
-        <para>The new handle position
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the position value passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.Slider2D(System.Int32,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEditor.Handles/CapFunction,UnityEngine.Vector2,System.Boolean)">
       <summary>
-        <para>Slide a handle in a 2D plane.</para>
+        <para>Make a 3D slider that moves along a plane defined by two axes.</para>
       </summary>
       <param name="id">(optional) override the default ControlID for this Slider2D instance.</param>
-      <param name="handlePos">The position of the current point.</param>
+      <param name="handlePos">The position of the current point in the space of Handles.matrix.</param>
       <param name="offset">(optional) renders the Slider2D at handlePos, but treats the Slider2D's origin as handlePos + offset. Useful for Slider2D instances that are placed/rendered relative to another object or handle.</param>
-      <param name="handleDir">The direction of the handle, only used for rendering of the handle.</param>
-      <param name="slideDir1">The first direction of the sliding.</param>
-      <param name="slideDir2">The second direction of the sliding.</param>
-      <param name="handleSize">The size of the handle.</param>
-      <param name="snap">(float or Vector2) set the snap increment (Pass a Vector2 to use separate snap increments in each dimension).</param>
+      <param name="handleDir">The direction of the handle in the space of Handles.matrix, only used for rendering of the handle.</param>
+      <param name="slideDir1">The first axis of the slider's plane of movement in the space of Handles.matrix.</param>
+      <param name="slideDir2">The second axis of the slider's plane of movement in the space of Handles.matrix.</param>
+      <param name="handleSize">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="snap">(float or Vector2) The snap increment along both axes, either uniform or per-axis. See Handles.SnapValue.</param>
       <param name="drawHelper">(default: false) render a rectangle around the handle when dragging.</param>
       <param name="capFunction">The function to call for doing the actual drawing.</param>
       <returns>
-        <para>The new handle position
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the position value passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.Slider2D(UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,System.Single,UnityEditor.Handles/CapFunction,UnityEngine.Vector2,System.Boolean)">
       <summary>
-        <para>Slide a handle in a 2D plane.</para>
+        <para>Make a 3D slider that moves along a plane defined by two axes.</para>
       </summary>
       <param name="id">(optional) override the default ControlID for this Slider2D instance.</param>
-      <param name="handlePos">The position of the current point.</param>
+      <param name="handlePos">The position of the current point in the space of Handles.matrix.</param>
       <param name="offset">(optional) renders the Slider2D at handlePos, but treats the Slider2D's origin as handlePos + offset. Useful for Slider2D instances that are placed/rendered relative to another object or handle.</param>
-      <param name="handleDir">The direction of the handle, only used for rendering of the handle.</param>
-      <param name="slideDir1">The first direction of the sliding.</param>
-      <param name="slideDir2">The second direction of the sliding.</param>
-      <param name="handleSize">The size of the handle.</param>
-      <param name="snap">(float or Vector2) set the snap increment (Pass a Vector2 to use separate snap increments in each dimension).</param>
+      <param name="handleDir">The direction of the handle in the space of Handles.matrix, only used for rendering of the handle.</param>
+      <param name="slideDir1">The first axis of the slider's plane of movement in the space of Handles.matrix.</param>
+      <param name="slideDir2">The second axis of the slider's plane of movement in the space of Handles.matrix.</param>
+      <param name="handleSize">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
+      <param name="snap">(float or Vector2) The snap increment along both axes, either uniform or per-axis. See Handles.SnapValue.</param>
       <param name="drawHelper">(default: false) render a rectangle around the handle when dragging.</param>
       <param name="capFunction">The function to call for doing the actual drawing.</param>
       <returns>
-        <para>The new handle position
-
-Note: Use HandleUtility.GetHandleSize where you might want to have constant screen-sized handles.</para>
+        <para>The new value modified by the user's interaction with the handle. If the user has not moved the handle, it will return the position value passed into the function.</para>
       </returns>
     </member>
     <member name="M:UnityEditor.Handles.SnapValue(System.Single,System.Single)">
@@ -13633,10 +14082,10 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>Draw a sphere handle. Pass this into handle functions.</para>
       </summary>
       <param name="controlID">The control ID for the handle.</param>
-      <param name="position">The world-space position of the handle's start point.</param>
-      <param name="rotation">The rotation of the handle.</param>
+      <param name="position">The position of the handle in the space of Handles.matrix.</param>
+      <param name="rotation">The rotation of the handle in the space of Handles.matrix.</param>
       <param name="eventType">Event type for the handle to act upon. By design it handles EventType.Layout and EventType.Repaint events.</param>
-      <param name="size">The size of the handle in world-space units.</param>
+      <param name="size">The size of the handle in the space of Handles.matrix. Use HandleUtility.GetHandleSize if you want a constant screen-space size.</param>
     </member>
     <member name="T:UnityEditor.HandleUtility">
       <summary>
@@ -14553,6 +15002,41 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>The current size of the bounding volume for this instance.</para>
       </returns>
     </member>
+    <member name="T:UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle.HandleDirection">
+      <summary>
+        <para>An enumeration of directions the handle moves in.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle.HandleDirection.NegativeX">
+      <summary>
+        <para>This value corresponds to the handle moving in a negative direction away from PrimitiveBoundsHandle.center along the x-axis.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle.HandleDirection.NegativeY">
+      <summary>
+        <para>This value corresponds to the handle moving in a negative direction away from PrimitiveBoundsHandle.center along the y-axis.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle.HandleDirection.NegativeZ">
+      <summary>
+        <para>This value corresponds to the handle moving in a negative direction away from PrimitiveBoundsHandle.center along the z-axis.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle.HandleDirection.PositiveX">
+      <summary>
+        <para>This value corresponds to the handle moving in a positive direction away from PrimitiveBoundsHandle.center along the x-axis.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle.HandleDirection.PositiveY">
+      <summary>
+        <para>This value corresponds to the handle moving in a positive direction away from PrimitiveBoundsHandle.center along the y-axis.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle.HandleDirection.PositiveZ">
+      <summary>
+        <para>This value corresponds to the handle moving in a positive direction away from PrimitiveBoundsHandle.center along the z-axis.</para>
+      </summary>
+    </member>
     <member name="M:UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle.IsAxisEnabled(UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle/Axes)">
       <summary>
         <para>Gets a value indicating whether the specified axis is enabled for the current instance.</para>
@@ -14596,6 +15080,99 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       </summary>
       <param name="size">A Vector3 specifying how large the bounding volume is along all of its axes.</param>
     </member>
+    <member name="T:UnityEditor.IMGUI.Controls.SearchField">
+      <summary>
+        <para>The SearchField control creates a text field for a user to input text that can be used for searching.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.SearchField.autoSetFocusOnFindCommand">
+      <summary>
+        <para>Changes the keyboard focus to the search field when the user presses ‘Ctrl/Cmd + F’ when set to true. It is true by default.</para>
+      </summary>
+    </member>
+    <member name="?:UnityEditor.IMGUI.Controls.SearchField.downOrUpArrowKeyPressed(UnityEditor.IMGUI.Controls.SearchField/SearchFieldCallback)">
+      <summary>
+        <para>This event is dispatched when the focused search field detects that the down or up key is pressed and can be used to change keyboard focus to another control, such as the TreeView.</para>
+      </summary>
+      <param name="value"></param>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.SearchField.searchFieldControlID">
+      <summary>
+        <para>This is the controlID used for the text field to obtain keyboard focus.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.SearchField.HasFocus">
+      <summary>
+        <para>This function returns true if the search field has keyboard focus.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.SearchField.OnGUI(System.String,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>This function displays the search field with the default UI style and uses the GUILayout class to automatically calculate the position and size of the Rect it is rendered to. Pass an optional list to specify extra layout properties.</para>
+      </summary>
+      <param name="text">Text string to display in the search field.</param>
+      <param name="options">An optional list of layout options that specify extra layout properties. &lt;br&gt;
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
+      <returns>
+        <para>The text entered in the search field. The original input string is returned instead if the search field text was not changed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.SearchField.OnGUI(UnityEngine.Rect,System.String)">
+      <summary>
+        <para>This function displays the search field with the default UI style in the given Rect.</para>
+      </summary>
+      <param name="rect">Rectangle to use for the search field.</param>
+      <param name="text">Text string to display in the search field.</param>
+      <returns>
+        <para>The text entered in the search field. The original input string is returned instead if the search field text was not changed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.SearchField.OnGUI(UnityEngine.Rect,System.String,UnityEngine.GUIStyle,UnityEngine.GUIStyle,UnityEngine.GUIStyle)">
+      <summary>
+        <para>This function displays a search text field with the given Rect and UI style parameters.</para>
+      </summary>
+      <param name="rect">Rectangle to use for the search field.</param>
+      <param name="text">Text string to display in the search field.</param>
+      <param name="style">The text field style.</param>
+      <param name="cancelButtonStyle">The cancel button style used when there is text in the search field.</param>
+      <param name="emptyCancelButtonStyle">The cancel button style used when there is no text in the search field.</param>
+      <returns>
+        <para>The text entered in the SearchField. The original input string is returned instead if the search field text was not changed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.SearchField.OnToolbarGUI(System.String,UnityEngine.GUILayoutOption[])">
+      <summary>
+        <para>This function displays the search field with the toolbar UI style and uses the GUILayout class to automatically calculate the position and size of the Rect it is rendered to. Pass an optional list to specify extra layout properties.</para>
+      </summary>
+      <param name="text">Text string to display in the search field.</param>
+      <param name="options">An optional list of layout options that specify extra layout properties. &lt;br&gt;
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
+      <returns>
+        <para>The text entered in the search field. The original input string is returned instead if the search field text was not changed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.SearchField.OnToolbarGUI(UnityEngine.Rect,System.String)">
+      <summary>
+        <para>This function displays the search field with a toolbar style in the given Rect.</para>
+      </summary>
+      <param name="rect">Rectangle to use for the search field.</param>
+      <param name="text">Text string to display in the search field.</param>
+      <returns>
+        <para>The text entered in the search field. The original input string is returned instead if the search field text was not changed.</para>
+      </returns>
+    </member>
+    <member name="T:UnityEditor.IMGUI.Controls.SearchField.SearchFieldCallback">
+      <summary>
+        <para>This is a generic callback delegate for SearchField events and does not take any parameters.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.SearchField.SetFocus">
+      <summary>
+        <para>This function changes keyboard focus to the search field so a user can start typing.</para>
+      </summary>
+    </member>
     <member name="T:UnityEditor.IMGUI.Controls.SphereBoundsHandle">
       <summary>
         <para>A compound handle to edit a sphere-shaped bounding volume in the Scene view.</para>
@@ -14633,9 +15210,54 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>The TreeView is an IMGUI control that lets you create tree views, list views and multi-column tables for Editor tools.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.baseIndent">
+      <summary>
+        <para>Indent used for all rows before the tree foldout arrows and content.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.cellMargin">
+      <summary>
+        <para>When using a MultiColumnHeader this value adjusts the cell rects provided for all columns except the tree foldout column.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.columnIndexForTreeFoldouts">
+      <summary>
+        <para>When using a MultiColumnHeader this value should be set to the column index in which the foldout arrows should appear.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.customFoldoutYOffset">
+      <summary>
+        <para>Custom vertical offset of the foldout arrow.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.depthIndentWidth">
+      <summary>
+        <para>Value that returns how far the foldouts are indented for each increasing depth value.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.extraSpaceBeforeIconAndLabel">
+      <summary>
+        <para>Value to control the spacing before the default icon and label. Can be used e.g for placing a toggle button to the left of the content.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.foldoutWidth">
+      <summary>
+        <para>Width of the built-in foldout arrow.</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.IMGUI.Controls.TreeView.hasSearch">
       <summary>
         <para>The current search state of the TreeView.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.isDragging">
+      <summary>
+        <para>True if the user is currently dragging one or more items in the TreeView, and false otherwise.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.isInitialized">
+      <summary>
+        <para>The TreeView is initialized by calling Reload(). Therefore returns false until Reload() is called the first time.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.IMGUI.Controls.TreeView.multiColumnHeader">
@@ -14643,9 +15265,39 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>Get the MultiColumnHeader of the TreeView. Can be null if the TreeView was created without a MultiColumnHeader.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.rootItem">
+      <summary>
+        <para>The hidden root item of the TreeView (it is never rendered).</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.rowHeight">
+      <summary>
+        <para>The fixed height used for each row in the TreeView if GetCustomRowHeight have not been overridden.</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.IMGUI.Controls.TreeView.searchString">
       <summary>
         <para>Current search string of the TreeView.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.showAlternatingRowBackgrounds">
+      <summary>
+        <para>Enable this to show alternating row background colors.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.showBorder">
+      <summary>
+        <para>Enable this to show a border around the TreeView.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.showingHorizontalScrollBar">
+      <summary>
+        <para>Returns true if the horizontal scroll bar is showing, otherwise false.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.showingVerticalScrollBar">
+      <summary>
+        <para>Returns true if the vertical scroll bar is showing, otherwise false.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.IMGUI.Controls.TreeView.state">
@@ -14661,6 +15313,11 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     <member name="P:UnityEditor.IMGUI.Controls.TreeView.treeViewControlID">
       <summary>
         <para>The controlID used by the TreeView to obtain keyboard control focus.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.IMGUI.Controls.TreeView.treeViewRect">
+      <summary>
+        <para>The Rect the TreeView is being rendered to.</para>
       </summary>
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.AddExpandedRows(UnityEditor.IMGUI.Controls.TreeViewItem,System.Collections.Generic.IList`1&lt;UnityEditor.IMGUI.Controls.TreeViewItem&gt;)">
@@ -14743,9 +15400,24 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.CanStartDrag(UnityEditor.IMGUI.Controls.TreeView/CanStartDragArgs)">
       <summary>
-        <para>Override this method to control whether dragging is supported for a given item.</para>
+        <para>This function is called whenever a TreeViewItem is clicked and dragged. It returns false by default.</para>
       </summary>
-      <param name="args">Method data.</param>
+      <param name="args"></param>
+    </member>
+    <member name="T:UnityEditor.IMGUI.Controls.TreeView.CanStartDragArgs">
+      <summary>
+        <para>Method arguments for the CanStartDrag virtual method.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.CanStartDragArgs.draggedItem">
+      <summary>
+        <para>Item about to be dragged.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.CanStartDragArgs.draggedItemIDs">
+      <summary>
+        <para>The multi-selection about to be dragged.</para>
+      </summary>
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.CenterRectUsingSingleLineHeight(UnityEngine.Rect&amp;)">
       <summary>
@@ -14756,6 +15428,11 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.CollapseAll">
       <summary>
         <para>Collapse all expanded items in the TreeView.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.TreeView.CommandEventHandling">
+      <summary>
+        <para>This function is called automatically and handles the ExecuteCommand events for “SelectAll” and “FrameSelection”. Override this function to extend or avoid Command events.</para>
       </summary>
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.ContextClicked">
@@ -14878,11 +15555,66 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>Right aligend label with alternative text color when selected and/or focused.</para>
       </summary>
     </member>
+    <member name="M:UnityEditor.IMGUI.Controls.TreeView.DoesItemMatchSearch(UnityEditor.IMGUI.Controls.TreeViewItem,System.String)">
+      <summary>
+        <para>Override this function to extend or change the search behavior.</para>
+      </summary>
+      <param name="item">Item used for matching against the search string.</param>
+      <param name="search">The search string of the TreeView.</param>
+      <returns>
+        <para>True if item matches search string, otherwise false.</para>
+      </returns>
+    </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.DoubleClickedItem(System.Int32)">
       <summary>
         <para>Override this method to handle double click events on an item.</para>
       </summary>
       <param name="id">ID of TreeViewItem that was double clicked.</param>
+    </member>
+    <member name="T:UnityEditor.IMGUI.Controls.TreeView.DragAndDropArgs">
+      <summary>
+        <para>Method arguments for the HandleDragAndDrop virtual method.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.DragAndDropArgs.dragAndDropPosition">
+      <summary>
+        <para>When dragging items the current drag can have the following 3 positions relative to the items: Upon an item, Between two items or Outside items.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.DragAndDropArgs.insertAtIndex">
+      <summary>
+        <para>This index refers to the index in the children list of the parentItem where the current drag is positioned.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.DragAndDropArgs.parentItem">
+      <summary>
+        <para>The parent item is set if the drag is either upon this item or between two of its children.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.DragAndDropArgs.performDrop">
+      <summary>
+        <para>This value is false as long as the mouse button is down, when the mouse button is released it is true.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.IMGUI.Controls.TreeView.DragAndDropPosition">
+      <summary>
+        <para>Enum describing the possible positions a drag can have relative to the items: upon a item, between two items or outside items.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.DragAndDropPosition.BetweenItems">
+      <summary>
+        <para>This value is used when dragging between two items.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.DragAndDropPosition.OutsideItems">
+      <summary>
+        <para>This value is used when dragging outside all items.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.DragAndDropPosition.UponItem">
+      <summary>
+        <para>This value is used when the drag is upon a item.</para>
+      </summary>
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.EndRename">
       <summary>
@@ -14898,6 +15630,25 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <summary>
         <para>Override to get notified when items are expanded or collapsed. This is a general notification that the expanded state has changed.</para>
       </summary>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.TreeView.FindItem(System.Int32,UnityEditor.IMGUI.Controls.TreeViewItem)">
+      <summary>
+        <para>Finds a TreeViewItem by an ID.</para>
+      </summary>
+      <param name="id">Find the TreeViewItem with this ID.</param>
+      <param name="searchFromThisItem">Sets the search to start from an item. Use 'rootItem' to search the entire tree.</param>
+      <returns>
+        <para>This search method returns the TreeViewItem found and returns null if not found.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.TreeView.FindRows(System.Collections.Generic.IList`1&lt;System.Int32&gt;)">
+      <summary>
+        <para>Useful for converting from TreeViewItem IDs to TreeViewItems using the current rows.</para>
+      </summary>
+      <param name="ids">TreeViewItem IDs.</param>
+      <returns>
+        <para>TreeViewItems.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.FrameItem(System.Int32)">
       <summary>
@@ -14961,7 +15712,7 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.GetFirstAndLastVisibleRows(System.Int32&amp;,System.Int32&amp;)">
       <summary>
-        <para>Get the first and the last index of the rows that are visible to the user in the scroll view of the TreeView.</para>
+        <para>Returns the first and the last indices of the rows that are visible in the scroll view of the TreeView.</para>
       </summary>
       <param name="firstRowVisible">First row visible.</param>
       <param name="lastRowVisible">Last row visible.</param>
@@ -15003,15 +15754,6 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>Rows.</para>
       </returns>
     </member>
-    <member name="M:UnityEditor.IMGUI.Controls.TreeView.GetRowsFromIDs(System.Collections.Generic.IList`1&lt;System.Int32&gt;)">
-      <summary>
-        <para>Useful for converting from TreeViewItem IDs to TreeViewItems using the current rows.</para>
-      </summary>
-      <param name="ids">TreeViewItem IDs.</param>
-      <returns>
-        <para>TreeViewItems.</para>
-      </returns>
-    </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.GetSelection">
       <summary>
         <para>Returns the list of TreeViewItem IDs that are currently selected.</para>
@@ -15019,13 +15761,13 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.HandleDragAndDrop(UnityEditor.IMGUI.Controls.TreeView/DragAndDropArgs)">
       <summary>
-        <para>This method should be overridden if dragging is supported i.e if CanStartDrag returns true. It is called continuously when the mouse cursor is dragged over the TreeView to allow the TreeView accept or reject the drag.</para>
+        <para>Override this function to control the drag and drop behavior of the TreeView.</para>
       </summary>
       <param name="args">Drag and drop arguments.</param>
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.HasFocus">
       <summary>
-        <para>Returns true if TreeView itself has keyboard focus (GUIUtility.keyboardControl) and the window the TreeView is in has focus.</para>
+        <para>Returns true if the TreeView and its EditorWindow have keyboard focus.</para>
       </summary>
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.HasSelection">
@@ -15078,6 +15820,31 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       </summary>
       <param name="args"></param>
     </member>
+    <member name="T:UnityEditor.IMGUI.Controls.TreeView.RenameEndedArgs">
+      <summary>
+        <para>Method arguments for the virtual method RenameEnded.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RenameEndedArgs.acceptedRename">
+      <summary>
+        <para>Is true if the rename is accepted.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RenameEndedArgs.itemID">
+      <summary>
+        <para>Item with ID that are being renamed.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RenameEndedArgs.newName">
+      <summary>
+        <para>Name entered in the rename overlay.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RenameEndedArgs.originalName">
+      <summary>
+        <para>The original name when starting the rename.</para>
+      </summary>
+    </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.Repaint">
       <summary>
         <para>Request a repaint of the window that the TreeView is rendered in.</para>
@@ -15088,6 +15855,69 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>Override this method to add custom GUI content for the rows in the TreeView.</para>
       </summary>
       <param name="args">Row data.</param>
+    </member>
+    <member name="T:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs">
+      <summary>
+        <para>Method arguments for the virtual method RowGUI.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.focused">
+      <summary>
+        <para>This value is true only when the TreeView has keyboard focus and the TreeView's window has focus.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.isRenaming">
+      <summary>
+        <para>This value is true when the ::item is currently being renamed.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.item">
+      <summary>
+        <para>Item for the current row being handled in TreeView.RowGUI.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.label">
+      <summary>
+        <para>Label used for text rendering of the item displayName. Note this is an empty string when isRenaming == true.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.row">
+      <summary>
+        <para>Row index into the list of current rows.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.rowRect">
+      <summary>
+        <para>Row rect for the current row being handled.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.selected">
+      <summary>
+        <para>This value is true when the current row's item is part of the current selection.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.GetCellRect(System.Int32)">
+      <summary>
+        <para>If using a MultiColumnHeader for the TreeView this method can be used to get the cell rects of a row using the visible columns of the MultiColumnHeader.</para>
+      </summary>
+      <param name="visibleColumnIndex">Index into the list of visible columns of the multi column header.</param>
+      <returns>
+        <para>Cell rect defined by the intersection between the row rect and the rect of the visible column.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.GetColumn(System.Int32)">
+      <summary>
+        <para>If using a MultiColumnHeader for the TreeView this method can be used to convert an index from the visible columns list to a index into the actual columns in the MultiColumnHeaderState.</para>
+      </summary>
+      <param name="visibleColumnIndex">This index is the index into the current visible columns.</param>
+      <returns>
+        <para>Column index into the columns array in MultiColumnHeaderState.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.TreeView.RowGUIArgs.GetNumVisibleColumns">
+      <summary>
+        <para>If using a MultiColumnHeader for the TreeView use this method to get the number of visible columns currently being shown in the MultiColumnHeader.</para>
+      </summary>
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.SearchChanged(System.String)">
       <summary>
@@ -15136,6 +15966,16 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
       <param name="id">TreeViewItem ID.</param>
       <param name="expanded">Expanded state: true expands, false collapses.</param>
     </member>
+    <member name="M:UnityEditor.IMGUI.Controls.TreeView.SetFocus">
+      <summary>
+        <para>Calling this function changes the keyboard focus to the TreeView.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.IMGUI.Controls.TreeView.SetFocusAndEnsureSelectedItem">
+      <summary>
+        <para>Calling this function changes the keyboard focus to the TreeView and ensures an item is selected. Use this function to enable key navigation of the TreeView.</para>
+      </summary>
+    </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.SetSelection(System.Collections.Generic.IList`1&lt;System.Int32&gt;)">
       <summary>
         <para>Set the selected items of the TreeView.</para>
@@ -15158,9 +15998,19 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.SetupDragAndDrop(UnityEditor.IMGUI.Controls.TreeView/SetupDragAndDropArgs)">
       <summary>
-        <para>Override to setup the global DragAndDrop state if dragging is supported.</para>
+        <para>This function is called when CanStartDrag returns true.</para>
       </summary>
       <param name="args"></param>
+    </member>
+    <member name="T:UnityEditor.IMGUI.Controls.TreeView.SetupDragAndDropArgs">
+      <summary>
+        <para>Method arguments to the virtual method SetupDragAndDrop.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.IMGUI.Controls.TreeView.SetupDragAndDropArgs.draggedItemIDs">
+      <summary>
+        <para>TreeViewItem IDs being dragged.</para>
+      </summary>
     </member>
     <member name="M:UnityEditor.IMGUI.Controls.TreeView.SetupParentsAndChildrenFromDepths(UnityEditor.IMGUI.Controls.TreeViewItem,System.Collections.Generic.IList`1&lt;UnityEditor.IMGUI.Controls.TreeViewItem&gt;)">
       <summary>
@@ -15635,6 +16485,21 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
         <para>Enable baked ambient occlusion (AO).</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.LightmapEditorSettings.giBakeBackend">
+      <summary>
+        <para>Determines which backend to use for baking lightmaps.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.LightmapEditorSettings.giPathTracerFilter">
+      <summary>
+        <para>Determines the filtering kernel for the Progressive Path Tracer backend.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.LightmapEditorSettings.giPathTracerSampling">
+      <summary>
+        <para>Determines which sampling strategy to use for baking lightmaps with the path tracing backend.</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.LightmapEditorSettings.maxAtlasHeight">
       <summary>
         <para>The maximum height of an individual lightmap texture.</para>
@@ -15663,6 +16528,71 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     <member name="P:UnityEditor.LightmapEditorSettings.textureCompression">
       <summary>
         <para>Whether to use texture compression on the generated lightmaps.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.LightmapEditorSettings.GIBakeBackend">
+      <summary>
+        <para>Backends available for baking lightmaps.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.LightmapEditorSettings.GIBakeBackend.PathTracer">
+      <summary>
+        <para>Backend for baking lightmaps with path tracing.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.LightmapEditorSettings.GIBakeBackend.Radiosity">
+      <summary>
+        <para>Backend for baking lightmaps with the Enlighten radiosity middleware.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.LightmapEditorSettings.PathTracerFilter">
+      <summary>
+        <para>The available filter kernels for the Progressive Path Tracer GI backend.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.LightmapEditorSettings.PathTracerFilter.ATrous">
+      <summary>
+        <para>Filter baked results of the Progressive Path Tracer with an A-Trous kernel.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.LightmapEditorSettings.PathTracerFilter.Gaussian">
+      <summary>
+        <para>Filter baked results of the Progressive Path Tracer with an Gauss kernel.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.LightmapEditorSettings.PathTracerFilterMode">
+      <summary>
+        <para>The available filtering modes for the Progressive Path Tracer GI backend.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.LightmapEditorSettings.PathTracerFilterMode.Advanced">
+      <summary>
+        <para>Enables the advanced filtering mode for the Progressive Path Tracer GI backend.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.LightmapEditorSettings.PathTracerFilterMode.Auto">
+      <summary>
+        <para>The filtering is configured automatically.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.LightmapEditorSettings.PathTracerFilterMode.None">
+      <summary>
+        <para>Turn filtering off.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.LightmapEditorSettings.PathTracerSampling">
+      <summary>
+        <para>Available sampling strategies for baking lightmaps with the path tracing backend.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.LightmapEditorSettings.PathTracerSampling.Auto">
+      <summary>
+        <para>Auto will automatically select the sampling settings.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.LightmapEditorSettings.PathTracerSampling.Fixed">
+      <summary>
+        <para>Fixed sampling uses a fixed number of samples per texel. This can be used when the other strategies fail to use enough samples in some areas. It will typically be slow.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.LightmapParameters">
@@ -15859,6 +16789,11 @@ Note: Use HandleUtility.GetHandleSize where you might want to have constant scre
     <member name="M:UnityEditor.Lightmapping.ClearLightingDataAsset">
       <summary>
         <para>Remove the lighting data asset used by the current scene.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.Lightmapping.ForceStop">
+      <summary>
+        <para>Force the Progressive Path Tracer to stop baking and use the computed results as they are.</para>
       </summary>
     </member>
     <member name="M:UnityEditor.Lightmapping.GetTerrainGIChunks(UnityEngine.Terrain,System.Int32&amp;,System.Int32&amp;)">
@@ -16263,16 +17198,16 @@ See Also: MaterialLightmapFlags.</para>
         <para>Draw a range slider for a range shader property.</para>
       </summary>
       <param name="label">Label for the property.</param>
-      <param name="prop"></param>
-      <param name="position"></param>
+      <param name="prop">The property to edit.</param>
+      <param name="position">Position and size of the range slider control.</param>
     </member>
     <member name="M:UnityEditor.MaterialEditor.RangeProperty(UnityEngine.Rect,UnityEditor.MaterialProperty,System.String)">
       <summary>
         <para>Draw a range slider for a range shader property.</para>
       </summary>
       <param name="label">Label for the property.</param>
-      <param name="prop"></param>
-      <param name="position"></param>
+      <param name="prop">The property to edit.</param>
+      <param name="position">Position and size of the range slider control.</param>
     </member>
     <member name="M:UnityEditor.MaterialEditor.RegisterPropertyChangeUndo(System.String)">
       <summary>
@@ -17028,26 +17963,35 @@ See Also: MaterialLightmapFlags.</para>
         <para>The MenuItem attribute allows you to add menu items to the main menu and inspector context menus.</para>
       </summary>
     </member>
-    <member name="M:UnityEditor.MenuItem.#ctor(System.String,System.Boolean,System.Int32)">
+    <member name="M:UnityEditor.MenuItem.#ctor(System.String)">
       <summary>
         <para>Creates a menu item and invokes the static function following it, when the menu item is selected.</para>
       </summary>
-      <param name="itemName"></param>
-      <param name="isValidateFunction"></param>
-      <param name="priority"></param>
+      <param name="itemName">The itemName is the menu item represented like a pathname.
+        For example the menu item could be "GameObject/Do Something".</param>
+      <param name="isValidateFunction">If isValidateFunction is true, this is a validation
+        function and will be called before invoking the menu function with the same itemName.</param>
+      <param name="priority">The order by which the menu items are displayed.</param>
     </member>
     <member name="M:UnityEditor.MenuItem.#ctor(System.String,System.Boolean)">
       <summary>
         <para>Creates a menu item and invokes the static function following it, when the menu item is selected.</para>
       </summary>
-      <param name="itemName"></param>
-      <param name="isValidateFunction"></param>
+      <param name="itemName">The itemName is the menu item represented like a pathname.
+        For example the menu item could be "GameObject/Do Something".</param>
+      <param name="isValidateFunction">If isValidateFunction is true, this is a validation
+        function and will be called before invoking the menu function with the same itemName.</param>
+      <param name="priority">The order by which the menu items are displayed.</param>
     </member>
-    <member name="M:UnityEditor.MenuItem.#ctor(System.String)">
+    <member name="M:UnityEditor.MenuItem.#ctor(System.String,System.Boolean,System.Int32)">
       <summary>
         <para>Creates a menu item and invokes the static function following it, when the menu item is selected.</para>
       </summary>
-      <param name="itemName"></param>
+      <param name="itemName">The itemName is the menu item represented like a pathname.
+        For example the menu item could be "GameObject/Do Something".</param>
+      <param name="isValidateFunction">If isValidateFunction is true, this is a validation
+        function and will be called before invoking the menu function with the same itemName.</param>
+      <param name="priority">The order by which the menu items are displayed.</param>
     </member>
     <member name="T:UnityEditor.MeshUtility">
       <summary>
@@ -17262,12 +18206,12 @@ See Also: MaterialLightmapFlags.</para>
     </member>
     <member name="P:UnityEditor.ModelImporter.importNormals">
       <summary>
-        <para>Use normals vectors from file.</para>
+        <para>Vertex normal import options.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.ModelImporter.importTangents">
       <summary>
-        <para>Use tangent vectors from file.</para>
+        <para>Vertex tangent import options.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.ModelImporter.isBakeIKSupported">
@@ -17764,57 +18708,57 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
     </member>
     <member name="T:UnityEditor.ModelImporterNormals">
       <summary>
-        <para>This is legacy!</para>
+        <para>Vertex normal generation options for ModelImporter.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.ModelImporterNormals.Calculate">
       <summary>
-        <para>This is Legacy.</para>
+        <para>Calculate vertex normals.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.ModelImporterNormals.Import">
       <summary>
-        <para>This is legacy!</para>
+        <para>Import vertex normals from model file (default).</para>
       </summary>
     </member>
     <member name="F:UnityEditor.ModelImporterNormals.None">
       <summary>
-        <para>This is legacy!</para>
+        <para>Do not import vertex normals.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.ModelImporterTangents">
       <summary>
-        <para>This is legacy.</para>
+        <para>Vertex tangent generation options for ModelImporter.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.ModelImporterTangents.CalculateLegacy">
       <summary>
-        <para>This is legacy.</para>
+        <para>Calculate tangents with legacy algorithm.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.ModelImporterTangents.CalculateLegacyWithSplitTangents">
       <summary>
-        <para>This is legacy.</para>
+        <para>Calculate tangents with legacy algorithm, with splits across UV charts.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.ModelImporterTangents.CalculateMikk">
       <summary>
-        <para>This is legacy.</para>
+        <para>Calculate tangents using MikkTSpace (default).</para>
       </summary>
     </member>
     <member name="F:UnityEditor.ModelImporterTangents.Import">
       <summary>
-        <para>This is legacy.</para>
+        <para>Import vertex tangents from model file.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.ModelImporterTangents.None">
       <summary>
-        <para>This is legacy.</para>
+        <para>Do not import vertex tangents.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.ModelImporterTangentSpaceMode">
       <summary>
-        <para>Animation generation options for ModelImporter.</para>
+        <para>Tangent space generation options for ModelImporter.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.ModelImporterTangentSpaceMode.Calculate">
@@ -17979,12 +18923,32 @@ To force a reload of the mask, simply set  ModelImporterClipAnimation.maskSource
         <para>Quality setting to use when importing the movie. This is a float value from 0 to 1.</para>
       </summary>
     </member>
+    <member name="T:UnityEditor.Networking.PlayerConnection.ConnectedPlayer">
+      <summary>
+        <para>Information of the connected player.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.Networking.PlayerConnection.ConnectedPlayer.PlayerId">
+      <summary>
+        <para>The Id of the player connected.</para>
+      </summary>
+    </member>
     <member name="T:UnityEditor.Networking.PlayerConnection.EditorConnection">
       <summary>
         <para>Handles the connection from the Editor to the Player.</para>
       </summary>
     </member>
-    <member name="M:UnityEditor.Networking.PlayerConnection.EditorConnection.Register(System.Guid,UnityEngine.Events.UnityAction`1&lt;UnityEngine.Runtime.Networking.PlayerConnection.MessageEventArgs&gt;)">
+    <member name="P:UnityEditor.Networking.PlayerConnection.EditorConnection.ConnectedPlayers">
+      <summary>
+        <para>A list of the connected players.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.Networking.PlayerConnection.EditorConnection.Initialize">
+      <summary>
+        <para>Initializes the EditorConnection.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.Networking.PlayerConnection.EditorConnection.Register(System.Guid,UnityEngine.Events.UnityAction`1&lt;UnityEngine.Networking.PlayerConnection.MessageEventArgs&gt;)">
       <summary>
         <para>Registers a callback on a certain message ID.</para>
       </summary>
@@ -18021,7 +18985,7 @@ The Player ID is used to distinguish between multiple Players connected to the s
       <param name="playerId">If set, the message will only send to the Player with this ID.</param>
       <param name="data"></param>
     </member>
-    <member name="M:UnityEditor.Networking.PlayerConnection.EditorConnection.Unregister(System.Guid,UnityEngine.Events.UnityAction`1&lt;UnityEngine.Runtime.Networking.PlayerConnection.MessageEventArgs&gt;)">
+    <member name="M:UnityEditor.Networking.PlayerConnection.EditorConnection.Unregister(System.Guid,UnityEngine.Events.UnityAction`1&lt;UnityEngine.Networking.PlayerConnection.MessageEventArgs&gt;)">
       <summary>
         <para>Deregisters a registered callback.</para>
       </summary>
@@ -18556,14 +19520,14 @@ See Also: PhysicsVisualizationSettings.</para>
         <para>Deprecated. Use PlayerSettings.GetApiCompatibilityLevel and PlayerSettings.SetApiCompatibilityLevel instead.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.PlayerSettings.applicationIdentifier">
+      <summary>
+        <para>Set the application identifier for the currently selected build target.</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.PlayerSettings.bakeCollisionMeshes">
       <summary>
         <para>Pre bake collision meshes on player build.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.bundleIdentifier">
-      <summary>
-        <para>Application bundle identifier shared between iOS &amp; Android platforms.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.PlayerSettings.bundleVersion">
@@ -18671,6 +19635,11 @@ See Also: PhysicsVisualizationSettings.</para>
         <para>Enable GPU skinning on capable platforms.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.PlayerSettings.graphicsJobMode">
+      <summary>
+        <para>Selects the graphics job mode to use on platforms that support both Native and Legacy graphics jobs.</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.PlayerSettings.graphicsJobs">
       <summary>
         <para>Enable graphics jobs (multi threaded rendering).</para>
@@ -18703,12 +19672,12 @@ See Also: PhysicsVisualizationSettings.</para>
     </member>
     <member name="P:UnityEditor.PlayerSettings.macFullscreenMode">
       <summary>
-        <para>Define how to handle fullscreen mode in Mac OS X standalones.</para>
+        <para>Define how to handle fullscreen mode in macOS standalones.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.PlayerSettings.muteOtherAudioSources">
       <summary>
-        <para>Mutes or allows audio from other applications to play in the background while the Unity application is running.</para>
+        <para>Stops or allows audio from other applications to play in the background while your Unity application is running.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.PlayerSettings.productName">
@@ -18831,69 +19800,9 @@ See Also: PhysicsVisualizationSettings.</para>
         <para>On Windows, show the application in the background if Fullscreen Windowed mode is used.</para>
       </summary>
     </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxDeployKinectHeadOrientation">
-      <summary>
-        <para>Xbox 360 Kinect Head Orientation file deployment.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxDeployKinectHeadPosition">
-      <summary>
-        <para>Xbox 360 Kinect Head Position file deployment.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxDeployKinectResources">
-      <summary>
-        <para>Xbox 360 Kinect resource file deployment.</para>
-      </summary>
-    </member>
     <member name="P:UnityEditor.PlayerSettings.xboxEnableAvatar">
       <summary>
         <para>Xbox 360 Avatars.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxEnableKinect">
-      <summary>
-        <para>Xbox 360 Kinect title flag - if false, the Kinect APIs are inactive.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxEnableKinectAutoTracking">
-      <summary>
-        <para>Xbox 360 Kinect automatic skeleton tracking.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxEnableSpeech">
-      <summary>
-        <para>Xbox 360 Kinect Enable Speech Engine.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxGenerateSpa">
-      <summary>
-        <para>Xbox 360 auto-generation of _SPAConfig.cs.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxImageXexFilePath">
-      <summary>
-        <para>Xbox 360 ImageXex override configuration file path.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxSpaFilePath">
-      <summary>
-        <para>Xbox 360 SPA file path.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxSpeechDB">
-      <summary>
-        <para>Xbox 360 Kinect Speech DB.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxSplashScreen">
-      <summary>
-        <para>Xbox 360 splash screen.</para>
-      </summary>
-    </member>
-    <member name="P:UnityEditor.PlayerSettings.xboxTitleId">
-      <summary>
-        <para>Xbox 360 title id.</para>
       </summary>
     </member>
     <member name="T:UnityEditor.PlayerSettings.Android">
@@ -18958,7 +19867,7 @@ See Also: PhysicsVisualizationSettings.</para>
     </member>
     <member name="P:UnityEditor.PlayerSettings.Android.minSdkVersion">
       <summary>
-        <para>Minimal Android SDK version.</para>
+        <para>The minimum API level required for your application to run.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.PlayerSettings.Android.preferredInstallLocation">
@@ -18979,6 +19888,11 @@ See Also: PhysicsVisualizationSettings.</para>
     <member name="P:UnityEditor.PlayerSettings.Android.targetDevice">
       <summary>
         <para>Android target device.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEditor.PlayerSettings.Android.targetSdkVersion">
+      <summary>
+        <para>The target API level of your application.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.PlayerSettings.Android.use24BitDepthBuffer">
@@ -19006,6 +19920,12 @@ See Also: PhysicsVisualizationSettings.</para>
         <para>Gets .NET API compatibility level for specified BuildTargetGroup.</para>
       </summary>
       <param name="buildTargetGroup"></param>
+    </member>
+    <member name="M:UnityEditor.PlayerSettings.GetApplicationIdentifier(UnityEditor.BuildTargetGroup)">
+      <summary>
+        <para>Get the application identifier for the specified platform.</para>
+      </summary>
+      <param name="targetGroup"></param>
     </member>
     <member name="M:UnityEditor.PlayerSettings.GetGraphicsAPIs(UnityEditor.BuildTarget)">
       <summary>
@@ -19155,7 +20075,7 @@ See Also: PhysicsVisualizationSettings.</para>
     </member>
     <member name="P:UnityEditor.PlayerSettings.iOS.buildNumber">
       <summary>
-        <para>The build number of the bundle.</para>
+        <para>The build number of the bundle</para>
       </summary>
     </member>
     <member name="P:UnityEditor.PlayerSettings.iOS.cameraUsageDescription">
@@ -19920,6 +20840,13 @@ See Also: PhysicsVisualizationSettings.</para>
       <param name="buildTargetGroup"></param>
       <param name="value"></param>
     </member>
+    <member name="M:UnityEditor.PlayerSettings.SetApplicationIdentifier(UnityEditor.BuildTargetGroup,System.String)">
+      <summary>
+        <para>Set the application identifier for the specified platform.</para>
+      </summary>
+      <param name="targetGroup"></param>
+      <param name="identifier"></param>
+    </member>
     <member name="M:UnityEditor.PlayerSettings.SetAspectRatio(UnityEditor.AspectRatio,System.Boolean)">
       <summary>
         <para>Enables the specified aspect ratio.</para>
@@ -20417,6 +21344,11 @@ Note: calling this function will implicitly call Application.SetStackTraceLogTyp
         <para>tvOS specific player settings.</para>
       </summary>
     </member>
+    <member name="P:UnityEditor.PlayerSettings.tvOS.buildNumber">
+      <summary>
+        <para>The build number of the bundle</para>
+      </summary>
+    </member>
     <member name="P:UnityEditor.PlayerSettings.tvOS.requireExtendedGameController">
       <summary>
         <para>Application requires extended game controller.</para>
@@ -20886,7 +21818,7 @@ For more information - https:msdn.microsoft.comlibrarywindowsappshh779671https:m
     </member>
     <member name="T:UnityEditor.PrefabType">
       <summary>
-        <para>The type of a prefab object as returned by EditorUtility.GetPrefabType.</para>
+        <para>The type of a prefab object as returned by PrefabUtility.GetPrefabType.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.PrefabType.DisconnectedModelPrefabInstance">
@@ -21374,6 +22306,11 @@ See Also:</para>
         <para>The CameraHDRMode to use for this tier.</para>
       </summary>
     </member>
+    <member name="F:UnityEditor.Rendering.TierSettings.realtimeGICPUUsage">
+      <summary>
+        <para>The RealtimeGICPUUsage to use for this tier.</para>
+      </summary>
+    </member>
     <member name="F:UnityEditor.Rendering.TierSettings.reflectionProbeBlending">
       <summary>
         <para>Allows you to specify whether Reflection Probes Blending should be enabled.</para>
@@ -21451,7 +22388,7 @@ See Also:</para>
     </member>
     <member name="T:UnityEditor.SceneManagement.EditorSceneManager">
       <summary>
-        <para>Scene management in the editor.</para>
+        <para>Scene management in the Editor.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.SceneManagement.EditorSceneManager.loadedSceneCount">
@@ -21467,7 +22404,7 @@ See Also:</para>
     </member>
     <member name="P:UnityEditor.SceneManagement.EditorSceneManager.preventCrossSceneReferences">
       <summary>
-        <para>Preventing cross-scene references from the editor UI.</para>
+        <para>Controls whether cross-Scene references are allowed in the Editor.</para>
       </summary>
     </member>
     <member name="?:UnityEditor.SceneManagement.EditorSceneManager.sceneClosed(UnityEditor.SceneManagement.EditorSceneManager/SceneClosedCallback)">
@@ -21538,6 +22475,9 @@ See Also:</para>
       <summary>
         <para>Returns the current setup of the SceneManager.</para>
       </summary>
+      <returns>
+        <para>An array of SceneSetup classes - one item for each Scene.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty">
       <summary>
@@ -21546,30 +22486,36 @@ See Also:</para>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.Scene)">
       <summary>
-        <para>Mark the Scene as modified.</para>
+        <para>Mark the specified Scene as modified.</para>
       </summary>
       <param name="scene">The Scene to be marked as modified.</param>
+      <returns>
+        <para>Whether the Scene was successfully marked as dirty.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.MoveSceneAfter(UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene)">
       <summary>
         <para>Allows you to reorder the Scenes currently open in the Hierarchy window. Moves the source Scene so it comes after the destination Scene.</para>
       </summary>
-      <param name="src"></param>
-      <param name="dst"></param>
+      <param name="src">The Scene to move.</param>
+      <param name="dst">The Scene which should come directly before the source Scene in the hierarchy.</param>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.MoveSceneBefore(UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene)">
       <summary>
         <para>Allows you to reorder the Scenes currently open in the Hierarchy window. Moves the source Scene so it comes before the destination Scene.</para>
       </summary>
-      <param name="src"></param>
-      <param name="dst"></param>
+      <param name="src">The Scene to move.</param>
+      <param name="dst">The Scene which should come directly after the source Scene in the hierarchy.</param>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.NewScene(UnityEditor.SceneManagement.NewSceneSetup,UnityEditor.SceneManagement.NewSceneMode)">
       <summary>
         <para>Create a new Scene.</para>
       </summary>
-      <param name="setup">Allows you to select whether or not the default set of GameObjects should be added to the new Scene. See SceneManagement.NewSceneSetup for more information about the options.</param>
-      <param name="mode">Allows you to select how to open the new Scene, and whether to keep existing Scenes in the Hierarchy. See SceneManagement.NewSceneMode for more information about the options.</param>
+      <param name="setup">Whether the new Scene should use the default set of GameObjects.</param>
+      <param name="mode">Whether to keep existing Scenes open.</param>
+      <returns>
+        <para>A reference to the new Scene.</para>
+      </returns>
     </member>
     <member name="T:UnityEditor.SceneManagement.EditorSceneManager.NewSceneCreatedCallback">
       <summary>
@@ -21583,8 +22529,11 @@ See Also:</para>
       <summary>
         <para>Open a Scene in the Editor.</para>
       </summary>
-      <param name="scenePath">Path of the Scene. Should be relative to the project folder. Like: "AssetsMyScenesMyScene.unity".</param>
+      <param name="scenePath">The path of the Scene. This should be relative to the Project folder; for example, "AssetsMyScenesMyScene.unity".</param>
       <param name="mode">Allows you to select how to open the specified Scene, and whether to keep existing Scenes in the Hierarchy. See SceneManagement.OpenSceneMode for more information about the options.</param>
+      <returns>
+        <para>A reference to the opened Scene.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.RestoreSceneManagerSetup(UnityEditor.SceneManagement.SceneSetup[])">
       <summary>
@@ -21594,14 +22543,20 @@ See Also:</para>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo">
       <summary>
-        <para>Ask the user if they want to save the the modified Scene(s).</para>
+        <para>Asks you if you want to save the modified Scene or Scenes.</para>
       </summary>
+      <returns>
+        <para>This returns true if you chose to save the Scene or Scenes, and returns false if you pressed Cancel.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.SaveModifiedScenesIfUserWantsTo(UnityEngine.SceneManagement.Scene[])">
       <summary>
-        <para>Ask the user if he wants to save any of the modfied input Scenes.</para>
+        <para>Asks whether the modfied input Scenes should be saved.</para>
       </summary>
       <param name="scenes">Scenes that should be saved if they are modified.</param>
+      <returns>
+        <para>Your choice of whether to save or not save the Scenes.</para>
+      </returns>
     </member>
     <member name="M:UnityEditor.SceneManagement.EditorSceneManager.SaveOpenScenes">
       <summary>
@@ -21616,8 +22571,8 @@ See Also:</para>
         <para>Save a Scene.</para>
       </summary>
       <param name="scene">The Scene to be saved.</param>
-      <param name="dstScenePath">The file path to save at. If not empty, the current open Scene will be overwritten, or if never saved before, a save dialog is shown.</param>
-      <param name="saveAsCopy">If set to true, the Scene will be saved without changing the current Scene and without clearing the unsaved changes marker.</param>
+      <param name="dstScenePath">The file path to save the Scene to. If the path is empty, the current open Scene is overwritten. If it has not yet been saved at all, a save dialog is shown.</param>
+      <param name="saveAsCopy">If set to true, the Scene is saved without changing the current Scene, and without clearing the unsaved changes marker.</param>
       <returns>
         <para>True if the save succeeded, otherwise false.</para>
       </returns>
@@ -21627,6 +22582,9 @@ See Also:</para>
         <para>Save a list of Scenes.</para>
       </summary>
       <param name="scenes">List of Scenes that should be saved.</param>
+      <returns>
+        <para>True if the save succeeded. Otherwise false.</para>
+      </returns>
     </member>
     <member name="T:UnityEditor.SceneManagement.EditorSceneManager.SceneClosedCallback">
       <summary>
@@ -22108,7 +23066,7 @@ See Also:</para>
     </member>
     <member name="M:UnityEditor.SerializedObject.UpdateIfDirtyOrScript">
       <summary>
-        <para>his has been made obsolete. See SerializedObject.UpdateIfRequiredOrScript instead.</para>
+        <para>This has been made obsolete. See SerializedObject.UpdateIfRequiredOrScript instead.</para>
       </summary>
     </member>
     <member name="M:UnityEditor.SerializedObject.UpdateIfRequiredOrScript">
@@ -23064,7 +24022,7 @@ See Also:</para>
     </member>
     <member name="F:UnityEditor.SpriteMetaData.pivot">
       <summary>
-        <para>Pivot point of the Sprite usually specified in values within range of (0 - 1). (0,0 at bottom left and 1,1 top right)</para>
+        <para>The pivot point of the Sprite, relative to its bounding rectangle.</para>
       </summary>
     </member>
     <member name="F:UnityEditor.SpriteMetaData.rect">
@@ -23412,6 +24370,25 @@ See Also:</para>
         <para>If set to true, visualization of portals is enabled.</para>
       </summary>
     </member>
+    <member name="T:UnityEditor.StatusQueryOptions">
+      <summary>
+        <para>Options for querying the version control system status of a file.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.StatusQueryOptions.ForceUpdate">
+      <summary>
+        <para>Force a refresh of the version control system status of the file. This is slow but accurate.
+
+See Also: AssetDatabase.IsOpenForEdit, AssetDatabase.IsMetaFileOpenForEdit.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEditor.StatusQueryOptions.UseCachedIfPossible">
+      <summary>
+        <para>Use the last known version control system status of the file. This is faster on average but less accurate than forcing an update, as it will cache the status of the file for a period of time.
+
+See Also: AssetDatabase.IsOpenForEdit, AssetDatabase.IsMetaFileOpenForEdit.</para>
+      </summary>
+    </member>
     <member name="T:UnityEditor.StereoRenderingPath">
       <summary>
         <para>Enum used to specify what stereo rendering path to use.</para>
@@ -23622,14 +24599,13 @@ Values match the ProceduralMaterial::ProceduralLoadingBehavior enum.</param>
       <summary>
         <para>Set the import settings for the input ProceduralMaterial for the input platform.</para>
       </summary>
-      <param name="materialName">The name of the Procedural Material.</param>
+      <param name="material">The name of the Procedural Material.</param>
       <param name="platform">The name of the platform (can be empty).</param>
       <param name="maxTextureWidth">The maximum texture width for this Procedural Material.</param>
       <param name="maxTextureHeight">The maximum texture height for this Procedural Material.</param>
       <param name="textureFormat">The texture format (0=Compressed, 1=RAW) for this Procedural Material.</param>
       <param name="loadBehavior">The load behavior for this Procedural Material.
 Values match the ProceduralMaterial::ProceduralLoadingBehavior enum.</param>
-      <param name="material"></param>
     </member>
     <member name="M:UnityEditor.SubstanceImporter.SetTextureAlphaSource(UnityEngine.ProceduralMaterial,System.String,UnityEngine.ProceduralOutputType)">
       <summary>
@@ -23791,7 +24767,7 @@ Values match the ProceduralMaterial::ProceduralLoadingBehavior enum.</param>
     </member>
     <member name="P:UnityEditor.TextureImporter.isReadable">
       <summary>
-        <para>Is texture data readable from scripts.</para>
+        <para>Set this to true if you want texture data to be readable from scripts. Set it to false to prevent scripts from reading texture data.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.TextureImporter.lightmap">
@@ -23816,7 +24792,7 @@ Values match the ProceduralMaterial::ProceduralLoadingBehavior enum.</param>
     </member>
     <member name="P:UnityEditor.TextureImporter.mipmapEnabled">
       <summary>
-        <para>Generate mip maps for the texture?</para>
+        <para>Generate Mip Maps.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.TextureImporter.mipmapFadeDistanceEnd">
